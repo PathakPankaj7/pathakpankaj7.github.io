@@ -8,7 +8,7 @@ window.AWARDS = [
   {
     "year": "2023",
     "title": "Magnetics Society Summer School Grant",
-    "source": "by IEEE Magnetics Society · 84 graduates selected worldwide"
+    "source": "by IEEE Magnetics Society"
   },
   {
     "year": "2023",
@@ -18,6 +18,6 @@ window.AWARDS = [
   {
     "year": "2021",
     "title": "Student Travel Grant",
-    "source": "by IEEE Magnetics Society · 15th Joint MMM–Intermag"
+    "source": "by IEEE Magnetics Society"
   }
 ];
