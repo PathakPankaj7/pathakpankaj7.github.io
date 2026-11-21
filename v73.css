@@ -21,8 +21,8 @@ body[data-view=contact]{--chapter:url(campus-3.webp)!important}
 .hero#home .film .shot.current{opacity:1!important;animation:photoDrift76 24s ease-in-out infinite alternate!important}
 .hero#home .bio-flow{align-items:center}
 .hero#home:not(.portrait-phase) .bio-column{grid-column:2}
-.hero#home .institution-dock a:first-child{opacity:1!important}
-.hero#home .institution-dock a:first-child img{filter:none!important;mix-blend-mode:normal!important;opacity:1!important}
+.hero#home .institution-dock a{opacity:1!important}
+.hero#home .institution-dock img{filter:none!important;mix-blend-mode:normal!important;opacity:1!important}
 @media(max-width:900px){.hero#home:not(.portrait-phase) .portrait-shell{display:none!important}.hero#home:not(.portrait-phase) .bio-column{grid-column:1}.chapter-caption{text-align:left!important}.hero#home .film-controls{right:5%;gap:6px}}
 @media(prefers-reduced-motion:reduce){body.inner-view .chapter::before,.hero#home .film .shot.current{animation:none!important}.hero#home .portrait-shell,.hero#home .film{transition:none!important}}
 
