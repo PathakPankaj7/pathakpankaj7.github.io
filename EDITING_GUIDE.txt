@@ -1,0 +1,17 @@
+V42 — GitHub Pages
+
+Upload the extracted files to the repository root (not the ZIP itself). No photos folder is required: photographs are embedded in index.html.
+
+To add a publication: open publications.js in GitHub, click the pencil (Edit), copy an existing publication object, paste it inside the array, separate objects with commas, and update the fields. Use category journal, conference, or invited. Include all authors and write P. Pathak for automatic highlighting. Include the publication year in citation (e.g. Journal Name 12, 123 (2027)). Add the DOI URL in url, and leave recognition empty if not applicable. Commit changes. Papers are sorted by year automatically.
+
+Example entry (illustrative, not a real paper):
+  {
+    "category": "journal",
+    "title": "Your new paper title",
+    "authors": "A. Author, P. Pathak and B. Author",
+    "citation": "Journal Name 12, 123 (2027)",
+    "recognition": "",
+    "url": ""
+  }
+
+Other files: profile.js (biography and contact), research.js (research titles and descriptions), awards.js (awards), service.js (professional service). index.html contains the design, animations, images and backup copies of the original academic content. The external editable files override these backups when loaded.
