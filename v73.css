@@ -1,140 +1,27 @@
-/* V73 custom refinements */
-.hero#home .portrait-shell{
-  background:rgba(255,255,255,.035)!important;
-  border:1px solid rgba(255,255,255,.14)!important;
-  box-shadow:0 24px 70px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.09)!important;
-  backdrop-filter:blur(14px) saturate(1.02)!important;
-}
-.hero#home .portrait-shell::before,
-.hero#home .portrait-shell::after,
-.hero#home .portrait-overlay,
-.hero#home .portrait-grid,
-.hero#home .portrait-chip{display:none!important}
-.hero#home .portrait{
-  object-position:center 16%!important;
-  filter:grayscale(1) contrast(1.08) brightness(.98)!important;
-  opacity:.46!important;
-  mix-blend-mode:screen;
-  transition:filter .45s ease,opacity .45s ease,mix-blend-mode .45s ease,transform .65s ease,box-shadow .45s ease!important;
-  box-shadow:0 18px 44px rgba(0,0,0,.22)!important;
-}
-.hero#home .portrait-shell:hover .portrait,
-.hero#home .portrait-shell:focus-within .portrait{
-  filter:none!important;
-  opacity:1!important;
-  mix-blend-mode:normal;
-  transform:scale(1.018);
-  box-shadow:0 24px 56px rgba(0,0,0,.3)!important;
-}
-.home-affiliations{display:none!important}
-.institution-dock{
-  display:flex;
-  align-items:flex-end;
-  justify-content:flex-start;
-  gap:clamp(12px,2.6vw,24px);
-  margin:14px 0 0;
-  padding:0;
-  flex-wrap:wrap;
-}
-.institution-dock a{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:74px;
-  height:52px;
-  opacity:.68;
-  transition:transform .32s cubic-bezier(.22,.8,.26,1.24),opacity .28s ease,filter .28s ease;
-  filter:drop-shadow(0 2px 8px rgba(0,0,0,.22));
-}
-.institution-dock a:hover,
-.institution-dock a:focus-visible{
-  opacity:1;
-  transform:translateY(-3px) scale(1.18);
-}
-.institution-dock img{
-  max-width:100%;
-  max-height:100%;
-  object-fit:contain;
-  filter:grayscale(1) brightness(1.28) contrast(1.18);
-}
-body.inner-view .chapter{
-  background:none!important;
-  overflow:hidden;
-  perspective:1400px;
-}
-.chapter-slides,
-.chapter-glass,
-.chapter-vignette{
-  position:absolute;
-  inset:0;
-}
-.chapter-slides{z-index:0;pointer-events:none}
-.chapter-slide{
-  position:absolute;
-  inset:-4%;
-  opacity:0;
-  background-size:cover;
-  background-position:center center;
-  transition:opacity 1.1s ease;
-  transform-origin:center center;
-  will-change:transform,opacity,filter;
-  filter:saturate(.94) contrast(1.04) brightness(.52);
-}
-.chapter-slide.active{opacity:1}
-.chapter-slide::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(180deg,rgba(6,10,12,.2) 0%,rgba(6,10,12,.34) 32%,rgba(6,10,12,.68) 100%),
-    radial-gradient(circle at 18% 18%,rgba(154,223,208,.12),transparent 36%),
-    radial-gradient(circle at 82% 22%,rgba(255,255,255,.08),transparent 30%);
-}
-.chapter-glass{
-  z-index:1;
-  background:linear-gradient(90deg,rgba(255,255,255,.05),transparent 16%,transparent 82%,rgba(255,255,255,.03));
-  mix-blend-mode:screen;
-  opacity:.32;
-  pointer-events:none;
-}
-.chapter-vignette{
-  z-index:1;
-  background:
-    radial-gradient(circle at center,transparent 28%,rgba(5,8,10,.22) 72%,rgba(5,8,10,.45) 100%),
-    linear-gradient(180deg,rgba(4,6,8,.08),rgba(4,6,8,.38));
-  pointer-events:none;
-}
-.chapter > *:not(.chapter-slides):not(.chapter-glass):not(.chapter-vignette){position:relative;z-index:2}
-.chapter-slide.drift-a{animation:v73DriftA 11s ease-in-out infinite alternate}
-.chapter-slide.drift-b{animation:v73DriftB 11.8s ease-in-out infinite alternate}
-.chapter-slide.drift-c{animation:v73DriftC 12.6s ease-in-out infinite alternate}
-.chapter-slide.drift-d{animation:v73DriftD 12.1s ease-in-out infinite alternate}
-@keyframes v73DriftA{
-  0%{transform:translate3d(-1.4%,0,0) scale(1.06) rotateX(0deg) rotateY(-2.2deg)}
-  50%{transform:translate3d(.9%,-1.2%,0) scale(1.09) rotateX(1deg) rotateY(1.2deg)}
-  100%{transform:translate3d(1.4%,-2.2%,0) scale(1.12) rotateX(-.8deg) rotateY(2.8deg)}
-}
-@keyframes v73DriftB{
-  0%{transform:translate3d(1.6%,1.2%,0) scale(1.05) rotateX(.6deg) rotateY(2.2deg)}
-  50%{transform:translate3d(-.6%,-1%,0) scale(1.08) rotateX(-.8deg) rotateY(-1.4deg)}
-  100%{transform:translate3d(-1.8%,-2%,0) scale(1.11) rotateX(.4deg) rotateY(-2.7deg)}
-}
-@keyframes v73DriftC{
-  0%{transform:translate3d(0,1.4%,0) scale(1.07) rotateX(-1.1deg) rotateY(1.8deg)}
-  50%{transform:translate3d(1.2%,-.7%,0) scale(1.09) rotateX(.8deg) rotateY(-1deg)}
-  100%{transform:translate3d(-1.2%,-2.4%,0) scale(1.12) rotateX(-.5deg) rotateY(2.4deg)}
-}
-@keyframes v73DriftD{
-  0%{transform:translate3d(.8%,0,0) scale(1.05) rotateX(.9deg) rotateY(-1.9deg)}
-  50%{transform:translate3d(-1.3%,-1%,0) scale(1.08) rotateX(-.5deg) rotateY(1.2deg)}
-  100%{transform:translate3d(1.5%,-1.8%,0) scale(1.11) rotateX(.4deg) rotateY(2deg)}
-}
-@media (max-width:900px){
-  .institution-dock a{width:64px;height:44px}
-  .chapter-slide{inset:-6%}
-}
-@media (prefers-reduced-motion:reduce){
-  .hero#home .portrait,
-  .institution-dock a,
-  .chapter-slide{transition:none!important;animation:none!important;transform:none!important}
-}
+/* V76: dedicated photographic layer, independent of scientific canvas. */
+body.inner-view .chapter{display:block!important;position:absolute!important;inset:0!important;height:100%!important;opacity:1!important;animation:none!important;transform:none!important;filter:none!important;background:none!important;overflow:hidden!important;isolation:isolate}
+body.inner-view .chapter::before{content:""!important;display:block!important;position:absolute;inset:-3%;background-image:var(--chapter)!important;background-size:cover!important;background-position:center!important;animation:photoDrift76 28s ease-in-out infinite alternate!important;transform-origin:center;opacity:1}
+body.inner-view .chapter::after{content:""!important;display:block!important;position:absolute;inset:0;background:linear-gradient(90deg,#101012a8,#10101238),linear-gradient(0deg,#101012 0%,#10101290 30%,#10101220 85%)!important;pointer-events:none}
+body[data-view=research]{--chapter:url(campus-1.webp)!important}
+body[data-view=publications]{--chapter:url(campus-2.webp)!important}
+body[data-view=talks]{--chapter:url(campus-7.webp)!important}
+body[data-view=career]{--chapter:url(campus-6.webp)!important}
+body[data-view=awards]{--chapter:url(campus-5.webp)!important}
+body[data-view=contact]{--chapter:url(campus-3.webp)!important}
+@keyframes photoDrift76{from{transform:scale(1.025) translateX(-.5%)}to{transform:scale(1.10) translateX(.5%)}}
+.chapter-caption{display:none}body.inner-view .chapter-caption{display:block;text-align:right;color:#e1e1e5;font:500 12px/1.5 var(--sans);letter-spacing:.025em;text-shadow:0 1px 8px #000;margin:0 0 18px}
+.hero#home .portrait-shell{background:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;padding:0!important;overflow:visible!important;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .45s ease,visibility 0s .45s}
+.hero#home.portrait-phase .portrait-shell{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .6s ease .3s,visibility 0s}
+.hero#home .portrait{filter:grayscale(1)!important;opacity:.86!important;mix-blend-mode:normal!important;transition:filter .6s,opacity .6s!important}
+.hero#home .portrait-shell:hover .portrait,.hero#home .portrait-shell:focus .portrait{filter:none!important;opacity:1!important}
+.hero#home .portrait-shell::before,.hero#home .portrait-shell::after{display:none!important}
+.hero#home .film{transition:opacity .4s ease;opacity:1!important}
+.hero#home.portrait-phase .film{opacity:0!important;visibility:hidden}
+.hero#home .film .shot{opacity:0!important;transition:opacity 2.2s ease!important}
+.hero#home .film .shot.current{opacity:1!important;animation:photoDrift76 24s ease-in-out infinite alternate!important}
+.hero#home .bio-flow{align-items:center}
+.hero#home:not(.portrait-phase) .bio-column{grid-column:2}
+.hero#home .institution-dock a:first-child{opacity:1!important}
+.hero#home .institution-dock a:first-child img{filter:none!important;mix-blend-mode:normal!important;opacity:1!important}
+@media(max-width:900px){.hero#home:not(.portrait-phase) .portrait-shell{display:none!important}.hero#home:not(.portrait-phase) .bio-column{grid-column:1}.chapter-caption{text-align:left!important}.hero#home .film-controls{right:5%;gap:6px}}
+@media(prefers-reduced-motion:reduce){body.inner-view .chapter::before,.hero#home .film .shot.current{animation:none!important}.hero#home .portrait-shell,.hero#home .film{transition:none!important}}
