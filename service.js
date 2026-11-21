@@ -11,12 +11,12 @@ window.SERVICE = [
     "organisation": "IEEE Around-the-Clock Around-the-Globe Magnetics Conference"
   },
   {
-    "year": "Jan 2023",
+    "year": "2023",
     "title": "Head, Student Committee",
     "organisation": "One-day workshop on MEMS, NEMS and Microfluidics, IIT Delhi"
   },
   {
-    "year": "Nov 2020",
+    "year": "2020",
     "title": "Member, Student Committee",
     "organisation": "IEEE International Conference on Emerging Electronics (IEEE‑ICEE), IIT Delhi"
   }
