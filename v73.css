@@ -5,8 +5,8 @@ body.inner-view .chapter::after{content:""!important;display:block!important;pos
 body[data-view=research]{--chapter:url(campus-1.webp)!important}
 body[data-view=publications]{--chapter:url(campus-2.webp)!important}
 body[data-view=talks]{--chapter:url(campus-7.webp)!important}
-body[data-view=career]{--chapter:url(campus-6.webp)!important}
-body[data-view=awards]{--chapter:url(campus-5.webp)!important}
+body[data-view=career]{--chapter:url(campus-9.webp)!important}
+body[data-view=awards]{--chapter:url(campus-4.webp)!important}
 body[data-view=contact]{--chapter:url(campus-3.webp)!important}
 @keyframes photoDrift76{from{transform:scale(1.025) translateX(-.5%)}to{transform:scale(1.10) translateX(.5%)}}
 .chapter-caption{display:none}body.inner-view .chapter-caption{display:block;text-align:right;color:#e1e1e5;font:500 12px/1.5 var(--sans);letter-spacing:.025em;text-shadow:0 1px 8px #000;margin:0 0 18px}
@@ -25,3 +25,5 @@ body[data-view=contact]{--chapter:url(campus-3.webp)!important}
 .hero#home .institution-dock a:first-child img{filter:none!important;mix-blend-mode:normal!important;opacity:1!important}
 @media(max-width:900px){.hero#home:not(.portrait-phase) .portrait-shell{display:none!important}.hero#home:not(.portrait-phase) .bio-column{grid-column:1}.chapter-caption{text-align:left!important}.hero#home .film-controls{right:5%;gap:6px}}
 @media(prefers-reduced-motion:reduce){body.inner-view .chapter::before,.hero#home .film .shot.current{animation:none!important}.hero#home .portrait-shell,.hero#home .film{transition:none!important}}
+
+body[data-view=career].inner-view .chapter::before{background-position:center 47%!important}
