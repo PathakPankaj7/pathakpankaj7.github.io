@@ -10,7 +10,7 @@ window.PROFILE = {
   "address": [
     "Room D2.029",
     "Ray Dolby Centre",
-    "Cavendish Laboratory, Department of Physics",
+    "Cavendish Laboratory",
     "University of Cambridge",
     "JJ Thomson Avenue",
     "Cambridge CB3 0US",
