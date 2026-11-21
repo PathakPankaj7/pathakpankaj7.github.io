@@ -1,19 +1,19 @@
 // Edit the values below. Keep quotation marks, commas and brackets.
 window.RESEARCH = [
   {
-    "animation": "spin",
-    "title": "Superconducting spintronics",
-    "description": "My research explores how superconductivity and magnetism interact in hybrid superconductor–ferromagnet heterostructures. I investigate spin-dependent transport and magnetisation dynamics using cryogenic electrical measurements and ferromagnetic resonance spectroscopy. A central aim is to understand how magnetic configurations influence superconducting transport and to explore the conditions for spin-polarised supercurrents. These studies seek to establish routes towards low-dissipation spintronic devices, energy-efficient cryogenic memory and logic, and hybrid quantum technologies."
-  },
-  {
     "animation": "vortex",
-    "title": "Vortex dynamics & nonequilibrium superconductivity",
-    "description": "I investigate the motion of magnetic flux vortices in superconducting microdevices and the emergence of nonequilibrium states under electrical and microwave excitation. My work focuses on vortex-flow instabilities and the transition from superconducting to dissipative transport regimes. By combining low-temperature transport with controlled magnetic fields and microwave excitation, I aim to understand the mechanisms governing these transitions. The broader objective is to identify ways of controlling vortex dynamics for functional superconducting devices, cryogenic memory and quantum technologies."
+    "title": "Vortex dynamics in superconductors",
+    "description": "My research investigates the dynamics of magnetic flux vortices in superconducting microdevices under applied magnetic fields and transport currents. I focus on vortex pinning, depinning, flux-flow regimes and vortex-flow instabilities. Through low-temperature electrical transport measurements, I aim to understand the mechanisms governing vortex motion and the onset of dissipation in superconducting structures. These investigations contribute towards the development of functional superconducting devices and emerging cryogenic technologies."
   },
   {
     "animation": "wave",
-    "title": "Microwave-driven superconductivity",
-    "description": "My research examines how microwave excitation modifies the properties of superconducting microdevices beyond equilibrium. I explore the interplay between microwave fields, quasiparticle dynamics and superconducting transport using cryogenic experimental platforms. The objective is to understand how external electromagnetic stimuli can influence dissipation, transport instabilities and the superconducting state. This work aims to inform the design of controllable superconducting electronics and devices operating at cryogenic temperatures."
+    "title": "Microwave-driven nonequilibrium superconductivity",
+    "description": "My research explores how high-frequency electromagnetic excitation modifies superconducting properties beyond equilibrium. I investigate microwave-induced changes in quasiparticle dynamics, critical currents and dissipative states using cryogenic experimental platforms. The objective is to understand the interplay between electromagnetic excitation and the superconducting state, enabling new approaches to controlling superconducting devices for cryogenic electronics and quantum technologies."
+  },
+  {
+    "animation": "spin",
+    "title": "Superconducting spintronics",
+    "description": "My research explores how superconductivity and magnetism interact in hybrid superconductor–ferromagnet heterostructures. I investigate spin-dependent transport and magnetisation dynamics using cryogenic electrical measurements and ferromagnetic resonance spectroscopy. A central aim is to understand how magnetic configurations influence superconducting transport and to explore the conditions for spin-polarised supercurrents. These studies seek to establish routes towards low-dissipation spintronic devices, energy-efficient cryogenic memory and logic, and hybrid quantum technologies."
   },
   {
     "animation": "optical",
