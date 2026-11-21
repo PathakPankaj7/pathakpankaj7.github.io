@@ -15,3 +15,9 @@ Example entry (illustrative, not a real paper):
   }
 
 Other files: profile.js (biography and contact), research.js (research titles and descriptions), awards.js (awards), service.js (professional service). index.html contains the design, animations, images and backup copies of the original academic content. The external editable files override these backups when loaded.
+
+TALKS & POSTERS: Edit talks.js (category talk or poster). The Talks & Posters tab uses the same layout as Publications.
+
+PROFESSIONAL SERVICE: Edit service.js for service roles and committee work.
+MEMBERSHIPS: Edit memberships.js for current professional societies and affiliations, separate from student committee work.
+TALKS: Only Talk and Poster categories; no invited/contributed status is displayed.
