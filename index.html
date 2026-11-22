@@ -1453,6 +1453,90 @@ html body[data-view="home"] .ambient-vignette {
     linear-gradient(180deg,transparent,rgba(0,0,0,.10) 55%,rgba(0,0,0,.26) 100%)!important;
 }
 </style>
+
+<style id="v165-unified-divider-and-background">
+/* One stable separator at the bottom of the navigation on every page. */
+html body header {
+  background:transparent!important;
+  background-color:transparent!important;
+  border:0!important;
+  border-bottom:0!important;
+  box-shadow:none!important;
+  isolation:isolate;
+}
+html body header::after {
+  content:""!important;
+  position:absolute!important;
+  left:4%!important;
+  right:4%!important;
+  bottom:0!important;
+  height:1px!important;
+  z-index:10!important;
+  display:block!important;
+  pointer-events:none!important;
+  background:linear-gradient(90deg,transparent,rgba(164,222,211,.56) 19%,rgba(211,218,222,.30) 50%,rgba(164,222,211,.56) 81%,transparent)!important;
+}
+/* Retire the older content-local dividers so no page gets a doubled line. */
+html body[data-view="home"] .hero#home::before,
+html body.inner-view main>section .academic-section-hairline {
+  display:none!important;
+  content:none!important;
+}
+/* Keep the scene itself below the navigation, with a soft entrance beneath
+   the divider instead of abrupt clipping or 3D lines behind the tab labels. */
+html body:not([data-view="gallery"]) .ambient-wrap #ambient-bg {
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0px,transparent var(--site-nav-bottom, 106px),#000 calc(var(--site-nav-bottom, 106px) + 88px))!important;
+  mask-image:linear-gradient(to bottom,transparent 0px,transparent var(--site-nav-bottom, 106px),#000 calc(var(--site-nav-bottom, 106px) + 88px))!important;
+}
+/* No dark panel or sudden colour change at the bottom of the About content. */
+html body[data-view="home"] .hero#home {
+  background:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+html body[data-view="home"] .hero#home .shade {
+  background:radial-gradient(ellipse at 50% 52%,transparent 35%,rgba(12,15,17,.12) 100%)!important;
+}
+html body[data-view="home"] .hero#home #field {
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 66%,rgba(0,0,0,.7) 82%,transparent 100%)!important;
+  mask-image:linear-gradient(to bottom,#000 0%,#000 66%,rgba(0,0,0,.7) 82%,transparent 100%)!important;
+}
+html body[data-view="home"] .ambient-vignette {
+  background:radial-gradient(circle at 20% 15%,#10a37f14,transparent 28%),
+             radial-gradient(circle at 80% 28%,#6cd3ff10,transparent 24%),
+             radial-gradient(circle at 50% 85%,#ffffff05,transparent 24%),
+             linear-gradient(180deg,transparent,rgba(0,0,0,.08) 100%)!important;
+}
+html body[data-view="home"] main,
+html body[data-view="home"] footer {
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+</style>
+
+<style id="v166-gallery-inspired-header-tone">
+/* Soft charcoal navigation surface, shared by all tabs including Gallery.
+   The scientific canvases remain below the existing 1px separator. */
+html body header,
+html body.inner-view header,
+html body[data-view="home"] header,
+html body[data-view="gallery"] header {
+  background:#191b1f!important;
+  background-color:#191b1f!important;
+  background-image:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  box-shadow:none!important;
+}
+html body header nav, html body header .nav-links {
+  background:transparent!important;
+  background-image:none!important;
+}
+/* Keep the V165 hairline above all content and make it visible everywhere. */
+html body header::after { display:block!important; opacity:1!important; }
+</style>
 </head><body><div aria-hidden="true" class="ambient-wrap"><div aria-hidden="true" class="chapter"></div><canvas id="ambient-bg"></canvas><div class="ambient-vignette"></div></div><header><nav aria-label="Main navigation"><a class="logo" href="#home">Dr. Pankaj Pathak</a><div class="nav-links"><a href="#home" aria-current="page">About</a><a href="#research">Research</a><a href="#publications">Publications</a><a href="#talks">Talks</a><a href="#career">Service</a><a href="#awards">Awards</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a></div></nav></header><div class="hero portrait-phase" id="home"><canvas aria-hidden="true" id="field"></canvas><div class="shade"></div><div class="hero-content"><div class="bio-flow"><div class="portrait-shell" tabindex="0"><img alt="Dr. Pankaj Pathak portrait" class="portrait" src="portrait-color.webp"/></div><div class="bio-column"><div class="bio-text"><p>I am a Postdoctoral Research Associate at the <a href="https://www.cam.ac.uk/" target="_blank" rel="noopener noreferrer">University of Cambridge</a>, working in the <a href="https://www.me.phy.cam.ac.uk/" target="_blank" rel="noopener noreferrer">Microelectronics Group</a> at the <a href="https://www.phy.cam.ac.uk/" target="_blank" rel="noopener noreferrer">Cavendish Laboratory</a>. I am also a postdoctoral affiliate member of <a href="https://www.trin.cam.ac.uk/" target="_blank" rel="noopener noreferrer">Trinity College, Cambridge</a>. My current research focuses on superconducting spintronics, vortex dynamics and nonequilibrium superconductivity for emerging cryogenic and quantum technologies.</p><p>I received my PhD in Electrical Engineering from the <a href="https://home.iitd.ac.in/" target="_blank" rel="noopener noreferrer">Indian Institute of Technology Delhi (IIT Delhi)</a>, where my doctoral research focused on magnetoelectric spintronic devices and multifunctional lab-on-a-chip technologies for energy-efficient computing and biomedical applications.</p></div><div aria-label="Institution websites" class="institution-dock"><a aria-label="University of Cambridge website" href="https://www.cam.ac.uk/" rel="noopener noreferrer" target="_blank" title="University of Cambridge"><img alt="" src="cambridge-crest.svg"/><span class="institution-name">University of Cambridge</span></a><a aria-label="Cavendish Laboratory website" href="https://www.phy.cam.ac.uk/" rel="noopener noreferrer" target="_blank" title="Cavendish Laboratory"><img alt="" src="cavendish-crocodile.png"/><span class="institution-name">Cavendish Laboratory</span></a><a aria-label="Trinity College website" href="https://www.trin.cam.ac.uk/" rel="noopener noreferrer" target="_blank" title="Trinity College"><img alt="" src="trinity-shield.svg"/><span class="institution-name">Trinity College, Cambridge</span></a><a aria-label="IIT Delhi website" href="https://home.iitd.ac.in/" rel="noopener noreferrer" target="_blank" title="IIT Delhi"><img alt="" src="iitd-original.png"/><span class="institution-name">IIT Delhi</span></a></div></div></div></div><span class="index">SPIN / MATTER / COHERENCE</span></div><main>
 <section aria-hidden="true" id="about"></section>
 <section id="research"><div class="academic-section-hairline" aria-hidden="true"></div><article class="research-row"><canvas aria-label="Animated scientific illustration of Vortex dynamics in superconductors" data-science="vortex" height="280" width="480"></canvas><div><h3>Vortex dynamics in superconductors</h3><p>My research investigates the dynamics of magnetic flux vortices in superconducting microdevices under applied magnetic fields and transport currents. I focus on vortex pinning, depinning, flux-flow regimes and vortex-flow instabilities. Through low-temperature electrical transport measurements, I aim to understand the mechanisms governing vortex motion and the onset of dissipation in superconducting structures. These investigations contribute towards the development of functional superconducting devices and emerging cryogenic technologies.</p></div></article><article class="research-row"><canvas aria-label="Animated scientific illustration of Microwave-driven nonequilibrium superconductivity" data-science="wave" height="280" width="480"></canvas><div><h3>Microwave-driven nonequilibrium superconductivity</h3><p>My research explores how high-frequency electromagnetic excitation modifies superconducting properties beyond equilibrium. I investigate microwave-induced changes in quasiparticle dynamics, critical currents and dissipative states using cryogenic experimental platforms. The objective is to understand the interplay between electromagnetic excitation and the superconducting state, enabling new approaches to controlling superconducting devices for cryogenic electronics and quantum technologies.</p></div></article><article class="research-row"><canvas aria-label="Animated scientific illustration of Superconducting spintronics" data-science="spin" height="280" width="480"></canvas><div><h3>Superconducting spintronics</h3><p>My research explores how superconductivity and magnetism interact in hybrid superconductor–ferromagnet heterostructures. I investigate spin-dependent transport and magnetisation dynamics using cryogenic electrical measurements and ferromagnetic resonance spectroscopy. A central aim is to understand how magnetic configurations influence superconducting transport and to explore the conditions for spin-polarised supercurrents. These studies seek to establish routes towards low-dissipation spintronic devices, energy-efficient cryogenic memory and logic, and hybrid quantum technologies.</p></div></article><article class="research-row"><canvas aria-label="Animated scientific illustration of Magnetoelectric spintronics &amp; optical control" data-science="optical" height="280" width="480"></canvas><div><h3>Magnetoelectric spintronics &amp; optical control</h3><p>I explore the coupling between electric, optical, elastic and magnetic degrees of freedom in magnetoelectric heterostructures. My work investigates how photo-induced strain can modify magnetoresistance and magnetisation dynamics in ferromagnetic thin films integrated with ferroelectric substrates. Electrical transport measurements and ferromagnetic resonance spectroscopy provide complementary ways to probe these effects. The long-term aim is to develop low-energy methods of controlling magnetic states for nonvolatile memory, logic and beyond-CMOS devices.</p></div></article><article class="research-row"><canvas aria-label="Animated scientific illustration of Magnetoelectrics for biomedical applications" data-science="fluid" height="280" width="480"></canvas><div><h3>Magnetoelectrics for biomedical applications</h3><p>My research explores magnetoelectric heterostructures as functional platforms for manipulating and detecting magnetic particles in microfluidic environments. I investigate strain-controlled magnetisation and domain-wall motion in patterned magnetic microstructures, together with magnetoelectric sensing approaches. The objective is to enable controlled particle transport and quantitative detection on integrated devices. These approaches have potential applications in compact lab-on-a-chip systems, biomedical sensing and diagnostic technologies.</p></div></article></section>
@@ -1954,4 +2038,15 @@ const progress=document.createElement('div');progress.id='research-progress';pro
   }
   links.forEach(button=>button.addEventListener('click',()=>select(button)));
   select(links[0]);
-})();</script></body></html>
+})();</script><script id="v165-nav-boundary">
+/* Track the actual header height on desktop and mobile, including wrapped navs. */
+(()=>{
+ const header=document.querySelector('header');
+ if(!header) return;
+ const sync=()=>document.documentElement.style.setProperty('--site-nav-bottom',Math.max(1,Math.ceil(header.getBoundingClientRect().bottom))+'px');
+ sync();
+ window.addEventListener('resize',sync,{passive:true});
+ if('ResizeObserver' in window) new ResizeObserver(sync).observe(header);
+})();
+</script>
+</body></html>
