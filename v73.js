@@ -34,21 +34,20 @@
 ['oxford-ivy-facade.webp', 'Ivy-clad architecture · Oxford', 'oxford', 'center 50%', 'cover'],
 ['oxfordshire-light-show.webp','Festival lights at night · Oxfordshire','oxford', 'center 65%', 'cover'],
 ['punting-bridge-cambridge.webp','Newton’s Bridge over the River Cam · Cambridge','cambridge', 'center 60%', 'cover'],
-['iitd-main-building-day.webp','Main Building promenade · IIT Delhi','delhi', 'center 50%', 'cover'],
 ['campus-3.webp','Ray Dolby Centre · Cavendish Laboratory, Cambridge','cambridge', 'center 50%', 'cover'],
 ['london-westminster-day.webp', 'Big Ben and the Houses of Parliament · London', 'london', 'center 45%', 'cover'],
 ['venice-grand-canal.webp','Grand Canal view · Venice, Italy','venice', 'center 65%', 'cover'],
 ['campus-9.webp','Newton’s Apple Tree · Trinity College, Cambridge','cambridge', 'center 45%', 'cover'],
 ['bari-garden-turn.webp','Garden trail · Bari, Italy','bari', 'center 55%', 'cover'],
 ['campus-2.webp','Nevile’s Court · Trinity College, Cambridge','cambridge', 'center 50%', 'cover'],
-['london-eye.webp', 'London Eye and the River Thames · London', 'london', 'center 65%', 'cover']];const stage=document.getElementById('gallery-stage'), layers=[...stage.querySelectorAll('.gallery-layer')], pause=document.getElementById('gallery-pause'), reduced=matchMedia('(prefers-reduced-motion: reduce)');let list=photos.slice(),i=0,slot=1,paused=reduced.matches,timer;
+['london-eye.webp', 'London Eye and the River Thames · London', 'london', 'center 65%', 'cover']];const stage=document.getElementById('gallery-stage'), layers=[...stage.querySelectorAll('.gallery-layer')], pause=document.getElementById('gallery-pause'), reduced=matchMedia('(prefers-reduced-motion: reduce)');let list=photos.filter(p=>p[2]==='delhi'),i=0,slot=1,paused=reduced.matches,timer;
 function show(n){i=(n+list.length)%list.length;const p=list[i];const old=layers[slot];slot=1-slot;const next=layers[slot];next.classList.remove('active');next.style.backgroundImage=`url("${p[0]}?v=118")`;next.style.backgroundPosition=p[3]||'center';next.dataset.chapel='false';next.dataset.subject=p[0];next.style.backgroundSize=p[4]||'cover';next.dataset.fit=p[4]||'cover';next.style.setProperty('--photo',`url("${p[0]}?v=118")`);next.style.backgroundRepeat='no-repeat';void next.offsetWidth;next.classList.add('active');old.classList.remove('active');document.getElementById('gallery-caption').textContent=p[1];document.getElementById('gallery-count').textContent=`${i+1} / ${list.length}`;sync();}
 function fit(){if(document.body.dataset.view==='gallery'){stage.parentElement.style.height=Math.max(200,window.innerHeight-document.querySelector('header').getBoundingClientRect().height)+'px';const w=stage.clientWidth,h=stage.clientHeight;if(w&&h){layers.forEach(l=>{if(l.dataset.subject!=='newton-statue-trinity.webp')return;const cover=Math.max(w/1350,h/1800),scale=Math.max(cover,Math.min(cover*1.35,h/(2*0.19*1800)));const iw=1350*scale,ih=1800*scale;const x=Math.min(0,Math.max(w-iw,w/2-iw*.46)),y=Math.min(0,Math.max(h-ih,h/2-ih*.19));l.style.backgroundSize=`${iw}px ${ih}px`;l.style.backgroundPosition=`${x}px ${y}px`;});}}}
 window.addEventListener('resize',fit);
 const locations=document.getElementById('gallery-locations');
 locations.querySelectorAll('button').forEach(button=>button.addEventListener('click',()=>{
 const key=button.dataset.location;
-list=key==='all'?photos.slice():photos.filter(p=>p[2]===key);
+list=photos.filter(p=>p[2]===key);
 locations.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
 show(0);
 }));
