@@ -517,7 +517,101 @@ html body .hero#home .bio-flow:has(.bio-text:focus-within) .portrait {
   opacity: 1 !important;
   mix-blend-mode: normal !important;
 }
-</style></head><body><div aria-hidden="true" class="ambient-wrap"><div aria-hidden="true" class="chapter"></div><canvas id="ambient-bg"></canvas><div class="ambient-vignette"></div></div><header><nav aria-label="Main navigation"><a class="logo" href="#home">Dr. Pankaj Pathak</a><div class="nav-links"><a href="#home">About me</a><a href="#research">Research interests</a><a href="#publications">Publications</a><a href="#talks">Talks &amp; Posters</a><a href="#career">Professional service</a><a href="#awards">Awards &amp; honours</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a></div></nav></header><div class="hero portrait-phase" id="home"><canvas aria-hidden="true" id="field"></canvas><div class="shade"></div><div class="hero-content"><div class="bio-flow"><div class="portrait-shell" tabindex="0"><img alt="Dr. Pankaj Pathak portrait" class="portrait" src="portrait-color.webp"/></div><div class="bio-column"><div class="bio-text"><p>I am a Postdoctoral Research Associate at the <a href="https://www.cam.ac.uk/">University of Cambridge</a>, working in the <a href="https://www.me.phy.cam.ac.uk/">Microelectronics Group</a> at the <a href="https://www.phy.cam.ac.uk/">Cavendish Laboratory</a>. I am also a postdoctoral affiliate member of <a href="https://www.trin.cam.ac.uk/">Trinity College, Cambridge</a>. My current research focuses on superconducting spintronics, vortex dynamics and nonequilibrium superconductivity for emerging cryogenic and quantum technologies.</p><p>I received my PhD in Electrical Engineering from the <a href="https://home.iitd.ac.in/">Indian Institute of Technology Delhi (IIT Delhi)</a>, where my doctoral research focused on magnetoelectric spintronic devices and multifunctional lab-on-a-chip technologies for energy-efficient computing and biomedical applications.</p></div><div aria-label="Institution websites" class="institution-dock"><a aria-label="University of Cambridge website" href="https://www.cam.ac.uk/" rel="noopener noreferrer" target="_blank" title="University of Cambridge"><img alt="" src="cambridge-crest.svg"/><span class="institution-name">University of Cambridge</span></a><a aria-label="Cavendish Laboratory website" href="https://www.phy.cam.ac.uk/" rel="noopener noreferrer" target="_blank" title="Cavendish Laboratory"><img alt="" src="cavendish-crocodile.png"/><span class="institution-name">Cavendish Laboratory</span></a><a aria-label="Trinity College website" href="https://www.trin.cam.ac.uk/" rel="noopener noreferrer" target="_blank" title="Trinity College"><img alt="" src="trinity-shield.svg"/><span class="institution-name">Trinity College, Cambridge</span></a><a aria-label="IIT Delhi website" href="https://home.iitd.ac.in/" rel="noopener noreferrer" target="_blank" title="IIT Delhi"><img alt="" src="iitd-original.png"/><span class="institution-name">IIT Delhi</span></a></div></div></div></div><span class="index">SPIN / MATTER / COHERENCE</span></div><main>
+</style><style id="v132-balanced-vibrant-nav">
+/* Equal-width navigation slots without changing the original 8-tab order or site effects. */
+html body header nav .nav-links {
+  display:grid!important;
+  grid-template-columns:repeat(8,minmax(0,1fr))!important;
+  width:min(96%,1440px)!important;
+  gap:0!important;
+  justify-items:stretch!important;
+  align-items:stretch!important;
+}
+html body header nav .nav-links a {
+  display:flex!important;
+  justify-content:center!important;
+  align-items:center!important;
+  width:100%!important;
+  min-width:0!important;
+  text-align:center!important;
+  padding:15px 5px!important;
+  transform-origin:center center!important;
+  transition:transform .30s cubic-bezier(.22,.61,.36,1), filter .35s ease!important;
+}
+/* Colourful cinematic inspiration, contained entirely within the hovered text and underline. */
+html body header nav .nav-links a:hover,
+html body header nav .nav-links a:focus-visible {
+  transform:scale(1.1)!important;
+  background-image:linear-gradient(105deg,#8fe6d0 0%,#84baff 28%,#bea4ff 52%,#ffbb8f 77%,#ffe59f 100%)!important;
+  background-clip:text!important;
+  -webkit-background-clip:text!important;
+  -webkit-text-fill-color:transparent!important;
+  filter:drop-shadow(0 0 5px rgba(138,197,242,.23))!important;
+  z-index:30!important;
+}
+html body header nav .nav-links a:not(:hover):not(:focus-visible) {
+  background-image:none!important;
+  -webkit-text-fill-color:currentColor!important;
+}
+html body header nav .nav-links a::after {
+  background:linear-gradient(90deg,#7edcca,#83b5f4,#c7a1f2,#e6a47b)!important;
+  height:1px!important;
+}
+/* Compact screens keep the familiar responsive two-row navigation, now uniformly spaced. */
+@media(max-width:800px) {
+  html body header nav .nav-links {
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    width:100%!important;
+  }
+  html body header nav .nav-links a {padding:10px 4px!important;}
+}
+@media(prefers-reduced-motion:reduce) {
+  html body header nav .nav-links a{transition:none!important;}
+  html body header nav .nav-links a:hover,
+  html body header nav .nav-links a:focus-visible{transform:none!important;}
+}
+</style>
+<style id="v133-subtabs-vibrant">
+/* Match V132's lively text-only navigation hover on all secondary tab/filter buttons. */
+html body #publications .filters button,
+html body #talks .filters button,
+html body #career .filters button,
+html body #research .research-index-links button,
+html body #gallery #gallery-locations button {
+  transition:transform .3s cubic-bezier(.22,.61,.36,1), filter .3s ease, color .3s ease!important;
+  transform-origin:center center;
+}
+html body #publications .filters button:hover,
+html body #publications .filters button:focus-visible,
+html body #talks .filters button:hover,
+html body #talks .filters button:focus-visible,
+html body #career .filters button:hover,
+html body #career .filters button:focus-visible,
+html body #research .research-index-links button:hover,
+html body #research .research-index-links button:focus-visible,
+html body #gallery #gallery-locations button:hover,
+html body #gallery #gallery-locations button:focus-visible {
+  transform:scale(1.1)!important;
+  background-image:linear-gradient(105deg,#8fe6d0 0%,#84baff 28%,#bea4ff 52%,#ffbb8f 77%,#ffe59f 100%)!important;
+  background-clip:text!important;
+  -webkit-background-clip:text!important;
+  -webkit-text-fill-color:transparent!important;
+  filter:drop-shadow(0 0 5px rgba(138,197,242,.23))!important;
+}
+@media(prefers-reduced-motion:reduce){
+  html body #publications .filters button,
+  html body #talks .filters button,
+  html body #career .filters button,
+  html body #research .research-index-links button,
+  html body #gallery #gallery-locations button{transition:none!important;}
+  html body #publications .filters button:hover,
+  html body #talks .filters button:hover,
+  html body #career .filters button:hover,
+  html body #research .research-index-links button:hover,
+  html body #gallery #gallery-locations button:hover{transform:none!important;}
+}
+</style>
+</head><body><div aria-hidden="true" class="ambient-wrap"><div aria-hidden="true" class="chapter"></div><canvas id="ambient-bg"></canvas><div class="ambient-vignette"></div></div><header><nav aria-label="Main navigation"><a class="logo" href="#home">Dr. Pankaj Pathak</a><div class="nav-links"><a href="#home">About me</a><a href="#research">Research interests</a><a href="#publications">Publications</a><a href="#talks">Talks &amp; Posters</a><a href="#career">Professional service</a><a href="#awards">Awards &amp; honours</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a></div></nav></header><div class="hero portrait-phase" id="home"><canvas aria-hidden="true" id="field"></canvas><div class="shade"></div><div class="hero-content"><div class="bio-flow"><div class="portrait-shell" tabindex="0"><img alt="Dr. Pankaj Pathak portrait" class="portrait" src="portrait-color.webp"/></div><div class="bio-column"><div class="bio-text"><p>I am a Postdoctoral Research Associate at the <a href="https://www.cam.ac.uk/" target="_blank" rel="noopener noreferrer">University of Cambridge</a>, working in the <a href="https://www.me.phy.cam.ac.uk/" target="_blank" rel="noopener noreferrer">Microelectronics Group</a> at the <a href="https://www.phy.cam.ac.uk/" target="_blank" rel="noopener noreferrer">Cavendish Laboratory</a>. I am also a postdoctoral affiliate member of <a href="https://www.trin.cam.ac.uk/" target="_blank" rel="noopener noreferrer">Trinity College, Cambridge</a>. My current research focuses on superconducting spintronics, vortex dynamics and nonequilibrium superconductivity for emerging cryogenic and quantum technologies.</p><p>I received my PhD in Electrical Engineering from the <a href="https://home.iitd.ac.in/" target="_blank" rel="noopener noreferrer">Indian Institute of Technology Delhi (IIT Delhi)</a>, where my doctoral research focused on magnetoelectric spintronic devices and multifunctional lab-on-a-chip technologies for energy-efficient computing and biomedical applications.</p></div><div aria-label="Institution websites" class="institution-dock"><a aria-label="University of Cambridge website" href="https://www.cam.ac.uk/" rel="noopener noreferrer" target="_blank" title="University of Cambridge"><img alt="" src="cambridge-crest.svg"/><span class="institution-name">University of Cambridge</span></a><a aria-label="Cavendish Laboratory website" href="https://www.phy.cam.ac.uk/" rel="noopener noreferrer" target="_blank" title="Cavendish Laboratory"><img alt="" src="cavendish-crocodile.png"/><span class="institution-name">Cavendish Laboratory</span></a><a aria-label="Trinity College website" href="https://www.trin.cam.ac.uk/" rel="noopener noreferrer" target="_blank" title="Trinity College"><img alt="" src="trinity-shield.svg"/><span class="institution-name">Trinity College, Cambridge</span></a><a aria-label="IIT Delhi website" href="https://home.iitd.ac.in/" rel="noopener noreferrer" target="_blank" title="IIT Delhi"><img alt="" src="iitd-original.png"/><span class="institution-name">IIT Delhi</span></a></div></div></div></div><span class="index">SPIN / MATTER / COHERENCE</span></div><main>
 <section aria-hidden="true" id="about"></section>
 <section id="research"><article class="research-row"><canvas aria-label="Animated scientific illustration of Vortex dynamics in superconductors" data-science="vortex" height="280" width="480"></canvas><div><h3>Vortex dynamics in superconductors</h3><p>My research investigates the dynamics of magnetic flux vortices in superconducting microdevices under applied magnetic fields and transport currents. I focus on vortex pinning, depinning, flux-flow regimes and vortex-flow instabilities. Through low-temperature electrical transport measurements, I aim to understand the mechanisms governing vortex motion and the onset of dissipation in superconducting structures. These investigations contribute towards the development of functional superconducting devices and emerging cryogenic technologies.</p></div></article><article class="research-row"><canvas aria-label="Animated scientific illustration of Microwave-driven nonequilibrium superconductivity" data-science="wave" height="280" width="480"></canvas><div><h3>Microwave-driven nonequilibrium superconductivity</h3><p>My research explores how high-frequency electromagnetic excitation modifies superconducting properties beyond equilibrium. I investigate microwave-induced changes in quasiparticle dynamics, critical currents and dissipative states using cryogenic experimental platforms. The objective is to understand the interplay between electromagnetic excitation and the superconducting state, enabling new approaches to controlling superconducting devices for cryogenic electronics and quantum technologies.</p></div></article><article class="research-row"><canvas aria-label="Animated scientific illustration of Superconducting spintronics" data-science="spin" height="280" width="480"></canvas><div><h3>Superconducting spintronics</h3><p>My research explores how superconductivity and magnetism interact in hybrid superconductor–ferromagnet heterostructures. I investigate spin-dependent transport and magnetisation dynamics using cryogenic electrical measurements and ferromagnetic resonance spectroscopy. A central aim is to understand how magnetic configurations influence superconducting transport and to explore the conditions for spin-polarised supercurrents. These studies seek to establish routes towards low-dissipation spintronic devices, energy-efficient cryogenic memory and logic, and hybrid quantum technologies.</p></div></article><article class="research-row"><canvas aria-label="Animated scientific illustration of Magnetoelectric spintronics &amp; optical control" data-science="optical" height="280" width="480"></canvas><div><h3>Magnetoelectric spintronics &amp; optical control</h3><p>I explore the coupling between electric, optical, elastic and magnetic degrees of freedom in magnetoelectric heterostructures. My work investigates how photo-induced strain can modify magnetoresistance and magnetisation dynamics in ferromagnetic thin films integrated with ferroelectric substrates. Electrical transport measurements and ferromagnetic resonance spectroscopy provide complementary ways to probe these effects. The long-term aim is to develop low-energy methods of controlling magnetic states for nonvolatile memory, logic and beyond-CMOS devices.</p></div></article><article class="research-row"><canvas aria-label="Animated scientific illustration of Magnetoelectrics for biomedical applications" data-science="fluid" height="280" width="480"></canvas><div><h3>Magnetoelectrics for biomedical applications</h3><p>My research explores magnetoelectric heterostructures as functional platforms for manipulating and detecting magnetic particles in microfluidic environments. I investigate strain-controlled magnetisation and domain-wall motion in patterned magnetic microstructures, together with magnetoelectric sensing approaches. The objective is to enable controlled particle transport and quantitative detection on integrated devices. These approaches have potential applications in compact lab-on-a-chip systems, biomedical sensing and diagnostic technologies.</p></div></article></section>
 <section id="publications"><div class="filters" id="filters"><button class="active" data-filter="journal">Journal articles (10)</button><button data-filter="conference">Conference papers (3)</button><button data-filter="invited">Invited articles (2)</button></div><div id="papers"><article class="pub"><span class="year">Physical Review B 112, 104432 (2025)</span><h3>Emerging magnetic phase in orthoferrite HoFeO₃ detected by spin-Hall magnetoresistance and spin Seebeck effect</h3><p>M. Basit, H. G. Giil, T. W. J. Metzger, O. Alves Santos, F. Johnson, P. Pathak, S. Mangin, A. Brataas, A. V. Kimel, C. Ciccarelli</p></article><article class="pub"><span class="year">Applied Physics Letters 126, 7 (2025)</span><h3>Voltage-controlled Strain-mediated Elliptical Micro-magnetic Motors for Single Magnetic Bead Manipulation</h3><p>P. Pathak, V. K. Yadav and D. Mallick</p></article><article class="pub"><span class="year">Applied Physics Letters 124, 11 (2024)</span><h3>Photo-strain Induced Magnetoresistance Modulation in Magnetoelectric Heterostructure based Devices</h3><p>P. Pathak, A. Kumar and D. Mallick</p></article><article class="pub"><span class="year">IEEE Journal of Microelectromechanical Systems 33, 127–129 (2024)</span><h3>Infrared-Driven Rapid Quantification of Magnetophoretically Trapped Drug</h3><p>V. K. Yadav, P. Pathak, P. Ganguly, P. Mishra, S. Das, and D. Mallick</p></article><article class="pub"><span class="year">IEEE Sensors Journal 24, 29874–29883 (2024)</span><h3>A Metglas Based Magneto-Triboelectric Energy Harvesting Device for Biomedical Applications</h3><p>D. Mukherjee, S. Singh, N. T. Beigh, S. Naval, P. Pathak, A. Goswami and D. Mallick</p></article><article class="pub"><span class="year">Physical Review Applied 20, 044055 (2023)</span><h3>Light-induced ferromagnetic resonance shift in magnetoelectric heterostructure</h3><p>P. Pathak, A. Kumar and D. Mallick</p></article><article class="pub"><span class="year">Applied Physics Letters 122, 10 (2023)</span><h3>Infrared-driven pyroelectric effect in magnetoelectric sensor for suspended on-chip magnetic nanoparticles quantification</h3><p>P. Pathak, V. K. Yadav, S. Das and D. Mallick</p></article><article class="pub"><span class="year">RSC Advances 13, 2820–2832 (2023)</span><h3>Deterministic domain wall rotation in a strain mediated FeGaB/PMN-PT asymmetrical ring structure for manipulating trapped magnetic nanoparticles in a fluidic environment</h3><p>P. Pathak, V. K. Yadav and D. Mallick</p></article><article class="pub"><span class="year">IEEE Transactions on Magnetics 58, 10 (2022)</span><h3>Straintronic nanomagnetic logic using self-biased dipole coupled elliptical nanomagnets</h3><p>P. Pathak and D. Mallick</p></article><article class="pub"><span class="year">IEEE Transactions on Electron Devices 68, 4418–4424 (2021)</span><h3>Size-dependent magnetization switching in magnetoelectric heterostructures for self-biased MRAM applications</h3><p>P. Pathak and D. Mallick</p></article></div></section>
@@ -748,7 +842,7 @@ const $ = (q) => document.querySelector(q);
 const el = (tag, cls, text) => {const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;};
 const profile=window.PROFILE;
 const heading=$('header nav .logo'); heading.textContent=profile.name;
-$('.bio-text').replaceChildren(...profile.biography.map(html=>{let p=el('p');p.innerHTML=html;return p}));const portrait=$('.portrait');if(portrait){portrait.src=profile.portrait;portrait.alt=profile.name;}const emailLink=$('#contact-email');emailLink.href='mailto:'+profile.email;emailLink.textContent=profile.email;const address=$('#postal-address');if(Array.isArray(profile.address)){address.replaceChildren(...profile.address.flatMap((line,i)=>i?[document.createElement('br'),document.createTextNode(line)]:[document.createTextNode(line)]));}
+$('.bio-text').replaceChildren(...profile.biography.map(html=>{let p=el('p');p.innerHTML=html;return p}));document.querySelectorAll('.hero#home .bio-text a[href^="http"]').forEach(link=>{link.target='_blank';link.rel='noopener noreferrer';});const portrait=$('.portrait');if(portrait){portrait.src=profile.portrait;portrait.alt=profile.name;}const emailLink=$('#contact-email');emailLink.href='mailto:'+profile.email;emailLink.textContent=profile.email;const address=$('#postal-address');if(Array.isArray(profile.address)){address.replaceChildren(...profile.address.flatMap((line,i)=>i?[document.createElement('br'),document.createTextNode(line)]:[document.createTextNode(line)]));}
 $('#research').replaceChildren(...window.RESEARCH.map(r=>{let a=el('article','research-row'),c=el('canvas');c.width=480;c.height=280;c.dataset.science=r.animation;c.setAttribute('aria-label','Animated scientific illustration of '+r.title);let d=el('div');d.append(el('h3','',r.title),el('p','',r.description));a.append(c,d);return a}));
 function records(data,awards){return data.slice().sort((a,b)=>parseInt(b.year)-parseInt(a.year)).map(r=>{let a=el('article','record'),d=el('div');d.append(el('strong','',r.title),el('p','',awards?r.source:r.organisation));a.append(el('span','record-year',r.year),d);return a})};
 $('#awards').replaceChildren(...records(window.AWARDS,true));
