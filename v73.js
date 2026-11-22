@@ -12,7 +12,7 @@
 ['river-cam-willow.webp','Riverside by the River Cam · Cambridge','cambridge', 'center 50%', 'cover'],
 ['oxfordshire-bonfire.webp','Bonfire night · Oxfordshire','oxford', 'center 50%', 'cover'],
 ['venice-canal-dome.webp','Canal and green dome · Venice, Italy','venice', 'center 50%', 'cover'],
-['newton-statue-trinity.webp','Sir Isaac Newton statue · Trinity College, Cambridge','cambridge', 'center 28%', 'cover'],
+['newton-statue-trinity.webp','Sir Isaac Newton statue · Trinity College, Cambridge','cambridge', 'center top', 'cover'],
 ['bari-beach-light.webp','Morning shoreline · Bari, Italy','bari', 'center 55%', 'cover'],
 ['cambridge-river-narrowboats.webp', 'Narrowboats along the River Cam · Cambridge', 'cambridge', 'center 65%', 'cover'],
 ["milan-tram.webp", "Historic yellow tram · Milan, Italy", "milan", 'center 65%', 'cover'],
@@ -38,12 +38,12 @@
 ['campus-3.webp','Ray Dolby Centre · Cavendish Laboratory, Cambridge','cambridge', 'center 50%', 'cover'],
 ['london-westminster-day.webp', 'Big Ben and the Houses of Parliament · London', 'london', 'center 45%', 'cover'],
 ['venice-grand-canal.webp','Grand Canal view · Venice, Italy','venice', 'center 65%', 'cover'],
-['campus-9.webp','Newton’s Apple Tree · Trinity College, Cambridge','cambridge', 'center 55%', 'contain'],
+['campus-9.webp','Newton’s Apple Tree · Trinity College, Cambridge','cambridge', 'center 45%', 'cover'],
 ['bari-garden-turn.webp','Garden trail · Bari, Italy','bari', 'center 55%', 'cover'],
 ['campus-2.webp','Nevile’s Court · Trinity College, Cambridge','cambridge', 'center 50%', 'cover'],
 ['london-eye.webp', 'London Eye and the River Thames · London', 'london', 'center 65%', 'cover']];const stage=document.getElementById('gallery-stage'), layers=[...stage.querySelectorAll('.gallery-layer')], pause=document.getElementById('gallery-pause'), reduced=matchMedia('(prefers-reduced-motion: reduce)');let list=photos.slice(),i=0,slot=1,paused=reduced.matches,timer;
-function show(n){i=(n+list.length)%list.length;const p=list[i];const old=layers[slot];slot=1-slot;const next=layers[slot];next.classList.remove('active');next.style.backgroundImage=`url("${p[0]}?v=117")`;next.style.backgroundPosition=p[3]||'center';next.dataset.chapel='false';next.style.backgroundSize=p[4]||'cover';next.dataset.fit=p[4]||'cover';next.style.setProperty('--photo',`url("${p[0]}?v=117")`);next.style.backgroundRepeat='no-repeat';void next.offsetWidth;next.classList.add('active');old.classList.remove('active');document.getElementById('gallery-caption').textContent=p[1];document.getElementById('gallery-count').textContent=`${i+1} / ${list.length}`;sync();}
-function fit(){if(document.body.dataset.view==='gallery'){stage.parentElement.style.height=Math.max(200,window.innerHeight-document.querySelector('header').getBoundingClientRect().height)+'px';}}
+function show(n){i=(n+list.length)%list.length;const p=list[i];const old=layers[slot];slot=1-slot;const next=layers[slot];next.classList.remove('active');next.style.backgroundImage=`url("${p[0]}?v=118")`;next.style.backgroundPosition=p[3]||'center';next.dataset.chapel='false';next.dataset.subject=p[0];next.style.backgroundSize=p[4]||'cover';next.dataset.fit=p[4]||'cover';next.style.setProperty('--photo',`url("${p[0]}?v=118")`);next.style.backgroundRepeat='no-repeat';void next.offsetWidth;next.classList.add('active');old.classList.remove('active');document.getElementById('gallery-caption').textContent=p[1];document.getElementById('gallery-count').textContent=`${i+1} / ${list.length}`;sync();}
+function fit(){if(document.body.dataset.view==='gallery'){stage.parentElement.style.height=Math.max(200,window.innerHeight-document.querySelector('header').getBoundingClientRect().height)+'px';const w=stage.clientWidth,h=stage.clientHeight;if(w&&h){layers.forEach(l=>{if(l.dataset.subject!=='newton-statue-trinity.webp')return;const cover=Math.max(w/1350,h/1800),scale=Math.max(cover,Math.min(cover*1.35,h/(2*0.19*1800)));const iw=1350*scale,ih=1800*scale;const x=Math.min(0,Math.max(w-iw,w/2-iw*.46)),y=Math.min(0,Math.max(h-ih,h/2-ih*.19));l.style.backgroundSize=`${iw}px ${ih}px`;l.style.backgroundPosition=`${x}px ${y}px`;});}}}
 window.addEventListener('resize',fit);
 const locations=document.getElementById('gallery-locations');
 locations.querySelectorAll('button').forEach(button=>button.addEventListener('click',()=>{
