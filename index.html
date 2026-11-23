@@ -2108,155 +2108,183 @@ function bgWash(t,tones){
 }
 
 function wavePath(yBase,amp1,amp2,t,seed){const pts=[];for(let i=0;i<=100;i++){const u=i/100;const x=u*W;const y=yBase+Math.sin(u*7.5+t*1.2+seed)*amp1+Math.cos(u*3.4-t*.6+seed*1.3)*amp2;pts.push([x,y]);}return pts}
-function drawHome(t){ // BCS schematic: each Cooper pair is adjacent electrons with opposite spin (↑↓)
- bgWash(t,[{x:.23,y:.24,r:.63,h:209,s:29,l:16,a:.058,sx:.12,sy:.14},{x:.77,y:.64,r:.58,h:260,s:25,l:15,a:.050,sx:.14,sy:.12}]);
- const scale=Math.max(.65,Math.min(1.25,Math.min(W,H)/750));
- const pair=(cx,cy,k)=>{
-   const z=0.87+.12*Math.sin(k*1.4+t*.18),gap=24*scale*z,rr=10.5*scale*z;
-   const sway=4.5*Math.sin(t*.30+k*.9);
-   const left=cx-gap+sway,right=cx+gap+sway,yy=cy+2.5*Math.cos(t*.33+k);
-   // A faint, single pair envelope rather than two physically separated orbitals.
-   g.save();g.beginPath();g.ellipse(cx+sway,yy,43*scale*z,18*scale*z,-.12,0,Math.PI*2);
-   g.strokeStyle='rgba(153,194,244,.10)';g.lineWidth=1.1;g.stroke();g.restore();
-   line([[left+rr*.75,yy],[right-rr*.75,yy]],'rgba(152,201,247,.12)',1.3);
-   for(const [x,col,sgn] of [[left,'#a2dcf7',-1],[right,'#c8b5f2',1]]){
-     g.beginPath();g.arc(x,yy,rr,0,Math.PI*2);g.fillStyle='rgba(7,13,23,.28)';g.fill();
-     g.strokeStyle=sgn<0?'rgba(163,220,247,.55)':'rgba(205,183,248,.53)';g.lineWidth=1.55;g.stroke();
-     const h=rr*.56;
-     // Integral ↑ and ↓ glyphs: the arrow is INSIDE its electron circle.
-     line([[x,yy+sgn*h],[x,yy-sgn*h]],col,1.9,.90);
-     const head=yy-sgn*h,step=sgn*3.4*scale;
-     line([[x-3.2*scale,head+step],[x,head],[x+3.2*scale,head+step]],col,1.6,.90);
-   }
- };
- const positions=[[.20,.27],[.48,.21],[.78,.29],[.31,.52],[.65,.53],[.18,.77],[.49,.79],[.82,.75]];
- positions.forEach(([x,y],i)=>pair(W*x+8*Math.sin(t*.18+i),H*y+7*Math.cos(t*.20+i*.7),i));
- for(let i=0;i<4;i++){let pts=[];for(let j=0;j<=95;j++){let u=j/95;pts.push([u*W,H*(.16+i*.22)+8*Math.sin(u*9-t*.40+i)]);}line(pts,'rgba(122,176,222,.043)',1.0)}
- for(let i=0;i<18;i++){const f=(i*.618034+t*.007)%1;dot(W*f,H*(.13+.75*((i*.414)%1)),1.05,'#b5e3fa',.22)}
+// V187: a shared, understated starfield and superconducting-inspired 3-D geometry.
+// These are artistic motifs rather than literal microscopic simulations.
+function stellarField(t,amount=76){
+  const size=Math.min(W,H);
+  for(let i=0;i<amount;i++){
+    const u=((i*0.61803398875+0.1234)%1),v=((i*.41421356237+.217)%1);
+    const depth=.35+.65*((i*.754877666)%1);
+    const x=(u*1.15-.075)*W + 3.3*Math.sin(t*.12+i)*depth;
+    const y=(v*1.13-.065)*H + 2.7*Math.cos(t*.14+i*1.3)*depth;
+    const a=(.11+.22*depth)*(.78+.22*Math.sin(t*.7+i*2.3));
+    dot(x,y,.48+1.05*depth,i%7===0?'#b8d4ff':i%11===0?'#d8c7ff':'#dbeefa',a);
+    if(i%23===0){line([[x-3.8,y],[x+3.8,y]],'rgba(175,208,239,.09)',.65);line([[x,y-3.8],[x,y+3.8]],'rgba(175,208,239,.09)',.65)}
+  }
 }
-function drawResearch(t){bgWash(t,[{x:.26,y:.24,r:.70,h:204,s:38,l:18,a:.10,sx:.17,sy:.14},{x:.74,y:.34,r:.58,h:256,s:24,l:18,a:.07,sx:.14,sy:.16},{x:.52,y:.82,r:.52,h:178,s:26,l:16,a:.05,sx:.12,sy:.10}]);
-const cx=W*.53,cy=H*.50;
-const hubs=[];
-for(let i=0;i<5;i++){const a=-1.15+i*.58+t*.06;hubs.push([cx+Math.cos(a)*W*.22,cy+Math.sin(a)*H*.18,i])}
-for(let i=0;i<hubs.length;i++){
-  const [x,y,idx]=hubs[i];
-  line([[cx,cy],[x,y]],'rgba(174,214,255,.10)',1.0);
-  const f=(t*.08+i*.16)%1; dot(cx+(x-cx)*f,cy+(y-cy)*f,1.9,'#e9fbff',.70);
-  if(idx===0){for(let r=0;r<3;r++){g.beginPath();g.ellipse(x,y,14+r*8,8+r*4,.35+t*.12,0,Math.PI*2);g.strokeStyle=`rgba(146,224,255,${.10-r*.02})`;g.stroke();}}
-  if(idx===1){for(let w=0;w<3;w++){let pts=[];for(let k=0;k<=34;k++){pts.push([x-26+k*1.5,y+Math.sin(k*.45+t*1.2+w)* (3+w*1.3)])}line(pts,'rgba(160,240,255,.12)',1.0)}}
-  if(idx===2){g.beginPath();g.arc(x,y,18,0,Math.PI*2);g.strokeStyle='rgba(192,176,255,.12)';g.stroke(); line([[x-12,y-12],[x+12,y+12]],'rgba(192,176,255,.10)',1.0); line([[x-12,y+12],[x+12,y-12]],'rgba(192,176,255,.10)',1.0)}
-  if(idx===3){for(let m=0;m<3;m++){g.beginPath();g.arc(x,y,8+m*8,0,Math.PI*1.4+Math.sin(t+m)*.2);g.strokeStyle=`rgba(126,228,206,${.12-m*.02})`;g.stroke();}}
-  if(idx===4){for(let p=0;p<5;p++){const a=t*.6+p*1.26;dot(x+Math.cos(a)*12,y+Math.sin(a)*12,1.8,'#bfe9ff',.68)}}
-  dot(x,y,3.2,idx%2?'#b9dcff':'#baf5ef',.82);
+function spacePoint(x,y,z,phase=0){
+  const yaw=.30+Math.sin(phase*.11)*.13,tilt=.39;
+  const X=x*Math.cos(yaw)-z*Math.sin(yaw),Z=x*Math.sin(yaw)+z*Math.cos(yaw);
+  const Y=y*Math.cos(tilt)-Z*Math.sin(tilt),D0=y*Math.sin(tilt)+Z*Math.cos(tilt);
+  const s=1/(1+Math.max(-230,Math.min(260,D0))*.00095);
+  return [W*.52+X*s,H*.53+Y*s,s];
 }
-dot(cx,cy,4.2,'#f2f8ff',.76);g.beginPath();g.arc(cx,cy,24+3*Math.sin(t*.8),0,Math.PI*2);g.strokeStyle='rgba(150,204,255,.09)';g.stroke();
-for(let j=0;j<5;j++){let pts=[];const yy=H*(.22+j*.14);for(let k=0;k<=70;k++){const x=k/70*W;pts.push([x,yy+Math.sin(k*.08+t*.55+j)*4]);}line(pts,'rgba(132,182,255,.04)',1.0)}
-glow(cx,cy,Math.min(W,H)*.22,'rgba(82,158,232,ALPHA)',.08)}function drawPublications(t){ // An open academic volume with an animated 3D page turn
- bgWash(t,[{x:.33,y:.28,r:.48,h:214,s:21,l:13,a:.038,sx:.11,sy:.13},{x:.77,y:.72,r:.41,h:260,s:19,l:12,a:.025,sx:.09,sy:.10}]);
- const S=Math.min(W,H),ox=W*.54,oy=H*.55,ww=Math.min(S*.32,W*.26),hh=ww*.75;
- g.save();g.translate(ox,oy);g.rotate(-.06+Math.sin(t*.14)*.014);
- const paper=(side,lift,alpha)=>{let d=side*ww;
-  g.beginPath();g.moveTo(0,0);g.bezierCurveTo(d*.33,-hh*.12+lift,d*.73,-hh*.13+lift,d,-hh*.05+lift);
-  g.lineTo(d,hh*.82+lift*.3);g.bezierCurveTo(d*.65,hh*.67+lift*.3,d*.25,hh*.67,0,hh*.88);g.closePath();
-  g.fillStyle=`rgba(145,178,215,${alpha*.24})`;g.fill();g.strokeStyle=`rgba(194,220,250,${alpha*.45})`;g.lineWidth=1.0;g.stroke();
-  for(let j=0;j<5;j++){const yy=hh*(-.015+j*.126)+lift*(1-j/5)*.35;
-   line([[d*.20,yy],[d*(j===0?.72:.84),yy-3*side]],`rgba(187,208,237,${alpha*.19})`,1.15);}
- };
- // Four stationary page stacks, spine, and a slowly travelling page.
- for(let k=2;k>=0;k--){paper(-1,k*2.1,.58-k*.08);paper(1,k*2.1,.58-k*.08)}
- line([[0,-hh*.025],[0,hh*.88]],'rgba(168,204,240,.32)',1.6);
- const phase=(t*.22)%2,turn=phase<1?phase:2-phase;
- const u=Math.sin(turn*Math.PI*.5);const width=(1-2*u)*ww;
- // The reversing page tapers through zero width at the spine before opening across the other side.
- g.beginPath();g.moveTo(0,-2);g.bezierCurveTo(width*.32,-hh*.18-16*Math.sin(turn*Math.PI),width*.80,-hh*.16-22*Math.sin(turn*Math.PI),width,-hh*.07);
- g.lineTo(width,hh*.78);g.bezierCurveTo(width*.72,hh*.68,width*.28,hh*.67,0,hh*.87);g.closePath();
- g.fillStyle='rgba(162,193,226,.20)';g.fill();g.strokeStyle='rgba(203,226,250,.40)';g.lineWidth=1.3;g.stroke();
- for(let j=0;j<4;j++){let y=hh*(.10+j*.135);line([[width*.20,y],[width*.76,y-2]],'rgba(203,223,244,.14)',1.0)}
- g.restore();
- for(let k=0;k<11;k++){const x=W*(.10+.80*((k*.618)%1)),y=H*(.13+.70*((k*.414)%1));dot(x,y,1.0,'#b8ddfc',.20)}
+function orbit3(cx,cy,rx,ry,depth,t,alpha=.14,hue=196,rot=0){
+  const pts=[];
+  for(let i=0;i<=96;i++){
+    const a=i/96*Math.PI*2+rot;
+    const p=spacePoint(cx+rx*Math.cos(a),cy+ry*Math.sin(a),depth*Math.sin(a+t*.17),t);
+    pts.push([p[0],p[1]]);
+  }
+  line(pts,`hsla(${hue},72%,74%,${alpha})`,1.05);
 }
-function drawTalks(t){ // A researcher speaking beside a presentation screen
- bgWash(t,[{x:.26,y:.30,r:.46,h:208,s:22,l:13,a:.035,sx:.11,sy:.10},{x:.80,y:.62,r:.43,h:253,s:19,l:12,a:.028,sx:.09,sy:.12}]);
- const S=Math.min(W,H),unit=Math.min(1.4,Math.max(.62,S/700));
- const sx=W*.62,sy=H*.38,sw=Math.min(W*.36,S*.51),sh=sw*.57;
- // Projected slide and stand: a faint rectangular screen with changing graph motifs.
- roundedRect(sx-sw*.5,sy-sh*.5,sw,sh,7,'rgba(96,142,190,.035)','rgba(181,209,242,.22)');
- line([[sx,sy+sh*.5],[sx,sy+sh*.5+22*unit]],'rgba(175,207,239,.16)',1.4);
- line([[sx-30*unit,sy+sh*.5+22*unit],[sx+30*unit,sy+sh*.5+22*unit]],'rgba(175,207,239,.16)',1.3);
- const left=sx-sw*.38,right=sx+sw*.38,top=sy-sh*.30;
- for(let j=0;j<3;j++){let pts=[];for(let i=0;i<=64;i++){const u=i/64;const x=left+(right-left)*u;
-   const y=top+sh*(.24+j*.21)+Math.sin(u*9-t*.44+j*1.2)*sh*.035;
-   pts.push([x,y]);}line(pts,j===1?'rgba(177,156,238,.27)':'rgba(127,205,235,.25)',1.25)}
- for(let j=0;j<5;j++){const x=left+j*(right-left)/4;line([[x,sy+sh*.34],[x,sy+sh*.39]],'rgba(199,217,240,.14)',1.0)}
- const blink=(Math.floor(t*.20)%3);dot(right-sw*.035,top+11,2.4,blink===0?'#c9d6ff':'#91dedc',.47);
- // Lecturer: clearly distinguishable head, shoulders, torso, animated pointing arm.
- const px=W*.30,py=H*.60,headR=11*unit;
- g.save();g.beginPath();g.arc(px,py-54*unit,headR,0,Math.PI*2);g.fillStyle='rgba(141,185,225,.12)';g.fill();g.strokeStyle='rgba(182,220,251,.29)';g.lineWidth=1.45;g.stroke();g.restore();
- const shoulderY=py-36*unit,waistY=py+13*unit;
- line([[px,shoulderY],[px,waistY]],'rgba(179,218,252,.29)',3.0);
- line([[px-22*unit,shoulderY+7*unit],[px,shoulderY],[px+19*unit,shoulderY+6*unit]],'rgba(179,218,252,.26)',1.9);
- line([[px,waistY],[px-14*unit,py+60*unit]],'rgba(179,218,252,.26)',1.9);
- line([[px,waistY],[px+14*unit,py+60*unit]],'rgba(179,218,252,.26)',1.9);
- const ex=px+36*unit,ey=py-36*unit-8*unit*Math.sin(t*.54);
- line([[px+18*unit,shoulderY+7*unit],[ex,ey]],'rgba(179,218,252,.30)',2.0);
- line([[px-21*unit,shoulderY+7*unit],[px-33*unit,py-8*unit]],'rgba(179,218,252,.24)',2.0);
- dot(ex,ey,2.8,'#b9e2ff',.63);
- // A short presentation pointer aims toward the screen.
- line([[ex,ey],[sx-sw*.38,sy-sh*.17]],'rgba(156,211,238,.16)',.9);
- // Sparse sound-wave arcs near the speaker, not a luminous stage.
- for(let i=0;i<3;i++){g.beginPath();g.arc(px+18*unit,py-53*unit,(15+i*11)*unit,-.64,.55);g.strokeStyle=`rgba(151,210,243,${.16-i*.037})`;g.lineWidth=1.1;g.stroke()}
+function stream3(t,y,phase,col,alpha=.11,swing=16){
+  const pts=[];
+  for(let i=0;i<=96;i++){
+    const u=i/96,xx=(u-.5)*W*1.16,zz=65*Math.sin(u*5.2+t*.22+phase);
+    const yy=y+swing*Math.sin(u*7.4+t*.52+phase)+7*Math.cos(u*3.2-t*.27+phase);
+    const p=spacePoint(xx,yy,zz,t);
+    pts.push([p[0],p[1]]);
+  }
+  line(pts,col,1.2,alpha);
+  return pts;
 }
-function drawCareer(t){ // Academic service: three researchers collaborating around a shared table
- bgWash(t,[{x:.28,y:.28,r:.46,h:170,s:19,l:13,a:.034,sx:.11,sy:.11},{x:.76,y:.62,r:.43,h:211,s:18,l:12,a:.028,sx:.10,sy:.10}]);
- const S=Math.min(W,H),u=Math.min(1.25,Math.max(.55,S/700)),cx=W*.51,cy=H*.53;
- // Perspective meeting table, a notebook and shared paper.
- const table=[[cx-115*u,cy+40*u],[cx+112*u,cy+40*u],[cx+147*u,cy+75*u],[cx-142*u,cy+75*u]];
- g.beginPath();table.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath();
- g.fillStyle='rgba(108,171,171,.035)';g.fill();g.strokeStyle='rgba(159,225,214,.22)';g.lineWidth=1.25;g.stroke();
- roundedRect(cx-32*u,cy+42*u,64*u,25*u,3,'rgba(170,208,226,.065)','rgba(185,225,236,.16)');
- line([[cx-20*u,cy+50*u],[cx+22*u,cy+50*u]],'rgba(154,212,222,.14)',1.1);
- line([[cx-20*u,cy+56*u],[cx+14*u,cy+56*u]],'rgba(154,212,222,.12)',1.1);
- const people=[[cx-105*u,cy-38*u],[cx,cy-73*u],[cx+105*u,cy-38*u]];
- people.forEach(([x,y],i)=>{
-  const bob=3*u*Math.sin(t*.35+i),hy=y+bob;
-  g.beginPath();g.arc(x,hy,11*u,0,Math.PI*2);g.fillStyle='rgba(150,211,212,.07)';g.fill();
-  g.strokeStyle='rgba(169,230,218,.32)';g.lineWidth=1.5;g.stroke();
-  g.beginPath();g.moveTo(x-19*u,hy+36*u);g.quadraticCurveTo(x-22*u,hy+17*u,x-11*u,hy+13*u);
-  g.quadraticCurveTo(x,hy+23*u,x+11*u,hy+13*u);g.quadraticCurveTo(x+22*u,hy+17*u,x+19*u,hy+36*u);
-  g.strokeStyle='rgba(169,230,218,.25)';g.lineWidth=1.7;g.stroke();
-  const handX=cx+(i-1)*35*u,handY=cy+41*u;
-  line([[x+(i===0?14:i===2?-14:0)*u,hy+28*u],[handX,handY]],'rgba(169,230,218,.20)',1.35);
- });
- // Ideas travel between participants and into the shared notes.
- for(let i=0;i<3;i++){const p=people[i],f=(t*.12+i*.32)%1;
-  const x=p[0]+(cx-p[0])*f,y=p[1]-18*u+(cy+38*u-(p[1]-18*u))*f;
-  dot(x,y,2.0,'#b8f5e9',.68);
- }
- for(let k=0;k<7;k++){const x=W*(.14+.72*((k*.618)%1)),y=H*(.16+.66*((k*.414)%1));dot(x,y,1,'#a7d8e9',.23)}
-}
-function drawAwards(t){ // Restrained stellar geometry: moments of recognition, not a medal illustration
-  bgWash(t,[{x:.42,y:.37,r:.42,h:213,s:20,l:13,a:.040,sx:.10,sy:.10},{x:.73,y:.74,r:.36,h:42,s:25,l:11,a:.023,sx:.08,sy:.10}]);
-  const M=Math.min(W,H), cx=W*.51,cy=H*.51;
-  const stars=[];
+function drawHome(t){ // condensed, paired electron field and phase-coherent supercurrent
+  bgWash(t,[]);stellarField(t,74);
+  const R=Math.min(W,H);
+  for(let j=0;j<6;j++)stream3(t,(j-2.5)*R*.12,j*.62,'#7fbded',.12,10+j*2);
   for(let i=0;i<13;i++){
-    const angle=i*2.39996+t*.027*(i%2?1:-1),r=M*(.07+.27*Math.sqrt((i+.7)/14));
-    const depth=Math.sin(i*1.93+t*.18)*85,p=1/(1+depth*.0019);
-    stars.push({x:cx+Math.cos(angle)*r*p*1.65,y:cy+Math.sin(angle)*r*p*.78,p,i});
+    const row=Math.floor(i/5),col=i%5;
+    const xx=(col-2)*Math.min(W*.16,165)+(row%2)*37;
+    const yy=(row-1)*Math.min(H*.23,166);
+    const zz=130*Math.sin(i*1.8+t*.2);
+    const a=spacePoint(xx+10*Math.sin(t*.22+i),yy+7*Math.cos(t*.26+i),zz,t);
+    const sep=(9+1.2*Math.sin(t*.65+i))*a[2];
+    const dx=sep*Math.cos(t*.42+i*1.34),dy=sep*.40*Math.sin(t*.42+i*1.34);
+    // The pair shares a single, compact envelope, not two detached planetary orbits.
+    g.save();g.beginPath();g.ellipse(a[0],a[1],sep*1.65,sep*.85,-.2,0,Math.PI*2);
+    g.strokeStyle='rgba(166,203,245,.13)';g.lineWidth=.9;g.stroke();g.restore();
+    line([[a[0]-dx,a[1]-dy],[a[0]+dx,a[1]+dy]],'rgba(174,211,244,.14)',1.05);
+    dot(a[0]-dx,a[1]-dy,2.7*a[2],'#a2dfff',.64);
+    dot(a[0]+dx,a[1]+dy,2.7*a[2],'#ceb9ff',.64);
   }
-  for(let i=0;i<stars.length;i++)for(let j=i+1;j<stars.length;j++){
-    const a=stars[i],b=stars[j],d=Math.hypot(a.x-b.x,a.y-b.y);
-    if(d<M*.21 && (i*3+j)%4===0)line([[a.x,a.y],[b.x,b.y]],'rgba(173,199,237,.105)',.85);
-  }
-  stars.forEach((s,i)=>{
-    const flicker=.63+.15*Math.sin(t*.45+i);
-    dot(s.x,s.y,(1.65+i%3*.35)*s.p,i%5===0?'#eee2bf':'#c3d7f7',flicker);
-    if(i%4===0){line([[s.x-5,s.y],[s.x+5,s.y]],'rgba(231,220,185,.17)',.75);line([[s.x,s.y-5],[s.x,s.y+5]],'rgba(231,220,185,.17)',.75)}
-  });
-  const central=stars[1];
-  g.beginPath();g.arc(central.x,central.y,14+2*Math.sin(t*.4),0,Math.PI*2);g.strokeStyle='rgba(235,222,193,.095)';g.lineWidth=.9;g.stroke();
 }
-function drawGallery(t){bgWash(t,[{x:.24,y:.22,r:.7,h:215,s:42,l:18,a:.08,sx:.12,sy:.10},{x:.78,y:.78,r:.62,h:186,s:28,l:16,a:.06,sx:.10,sy:.12}]);for(let i=0;i<42;i++){const x=(i*.618033%1)*W,y=((i*.371+t*.008)%1)*H;dot(x,y,.8+(i%3)*.22,'#d8e7ff',.18+(i%4)*.04)}}
-function drawContact(t){bgWash(t,[{x:.18,y:.18,r:.7,h:194,s:60,l:22,a:.16,sx:.19,sy:.16},{x:.76,y:.5,r:.62,h:275,s:40,l:21,a:.14,sx:.22,sy:.18},{x:.48,y:.84,r:.56,h:208,s:42,l:18,a:.08,sx:.15,sy:.14}]);const nodes=Array.from({length:18},(_,i)=>[W*(.12+.76*((i*.618033)%1))+Math.sin(t*.34+i)*24,H*(.14+.72*((i*.41421)%1))+Math.cos(t*.29+i)*20]);for(let i=0;i<nodes.length;i++){const a=nodes[i];for(let j=i+1;j<nodes.length;j++){const b=nodes[j],d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(d<Math.min(W,H)*.3){line([a,b],'rgba(170,206,255,.14)',1.1);const f=(t*.22+(i+j)*.11)%1;dot(a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,2.2,'#d6f3ff',.85)}}dot(a[0],a[1],3.2,'#bfe5ff',.8);g.beginPath();g.arc(a[0],a[1],10+((t*24+i*7)%42),0,Math.PI*2);g.strokeStyle='rgba(167,216,255,.12)';g.stroke()}let pts=[];for(let i=0;i<=120;i++){const x=i/120*W;pts.push([x,H*.52+Math.sin(i*.12-t*1.2)*26+Math.cos(i*.04+t*.8)*10])}line(pts,'rgba(147,223,255,.20)',1.5)}
+function drawResearch(t){ // pinning and motion of magnetic flux vortices
+  bgWash(t,[]);stellarField(t,71);
+  const R=Math.min(W,H);
+  for(let j=0;j<5;j++)stream3(t,(j-2)*R*.15,j*.43,'#73cadc',.10,10);
+  const centers=[[-.27,-.18],[.02,-.12],[.28,.02],[-.17,.20],[.20,.26]];
+  centers.forEach(([x,y],k)=>{
+    const p=spacePoint(x*W*.8,y*H*.8,55*Math.sin(k+t*.16),t);
+    for(let r=0;r<3;r++){
+      const pts=[];
+      for(let n=0;n<=70;n++){
+        const a=n/70*Math.PI*2+t*.35*(k%2?1:-1);
+        pts.push([p[0]+Math.cos(a)*(18+r*12)*p[2],p[1]+Math.sin(a)*(9+r*6)*p[2]]);
+      }
+      line(pts,`rgba(126,224,225,${.095-r*.016})`,1.05);
+    }
+    const phase=t*.34+k*1.3;
+    dot(p[0]+Math.cos(phase)*28,p[1]+Math.sin(phase)*14,2.1,'#b4f0fb',.68);
+    line([[p[0],p[1]-23],[p[0],p[1]+23]],'rgba(143,197,250,.12)',1.05);
+  });
+}
+function drawPublications(t){ // quiet orbital tracks: knowledge circulating and connecting
+  bgWash(t,[]);stellarField(t,83);
+  const R=Math.min(W,H);
+  const points=[];
+  for(let i=0;i<11;i++){
+    const a=i*2.39996+t*.055;
+    const r=R*(.10+.31*(i/11));
+    const p=spacePoint(r*Math.cos(a),r*.63*Math.sin(a),95*Math.sin(a*1.7+i),t);
+    points.push(p);
+    orbit3(r*Math.cos(a)*.18,r*.18*Math.sin(a),16+(i%3)*8,9+(i%3)*5,45,t,.07,215,i);
+    dot(p[0],p[1],2.1,'#acd9f7',.60);
+  }
+  for(let i=0;i<points.length;i++){
+    for(let j=i+1;j<points.length;j++){
+      const a=points[i],b=points[j],d=Math.hypot(a[0]-b[0],a[1]-b[1]);
+      if(d<R*.26){line([[a[0],a[1]],[b[0],b[1]]],'rgba(151,189,232,.11)',.9);
+        if((i+j)%4===0){const f=(t*.08+(i+j)*.09)%1;dot(a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,1.7,'#d9edff',.70)}
+      }
+    }
+  }
+  for(let k=0;k<3;k++)orbit3(0,0,R*(.24+k*.075),R*(.12+k*.042),60,t,.065,215,k*.23);
+}
+function drawTalks(t){ // expanding, low-amplitude phase waves carried through space
+  bgWash(t,[]);stellarField(t,76);
+  const R=Math.min(W,H),cx=W*.47,cy=H*.52;
+  for(let j=0;j<7;j++){
+    const q=(j/7+t*.07)%1,rx=(25+q*R*.62),ry=rx*.46;
+    const pts=[];
+    for(let i=0;i<=88;i++){
+      const a=i/88*Math.PI*2;
+      const X=rx*Math.cos(a),Y=ry*Math.sin(a),Z=45*Math.sin(a+t*.12+j);
+      const p=spacePoint(X-R*.07,Y,Z,t);
+      pts.push([p[0],p[1]]);
+    }
+    line(pts,`rgba(123,205,242,${.105*(1-q)+.022})`,1.08);
+  }
+  for(let j=0;j<4;j++){
+    const pts=stream3(t,(j-1.5)*R*.17,j*.8,'#8fc9f8',.105,7);
+    const i=Math.floor(((t*.09+j*.24)%1)*(pts.length-1));
+    dot(pts[i][0],pts[i][1],2.15,'#ccedff',.72);
+  }
+  dot(cx,cy,2.8,'#b3eaff',.64);
+}
+function drawCareer(t){ // research community: a small constellation of connected scientists
+  bgWash(t,[]);stellarField(t,75);
+  const R=Math.min(W,H),nodes=[];
+  for(let i=0;i<12;i++){
+    const x=(i*.618033%1-.5)*W*.78, y=(i*.414213%1-.5)*H*.70;
+    const p=spacePoint(x+8*Math.sin(t*.19+i),y+8*Math.cos(t*.21+i),70*Math.sin(i*1.8+t*.14),t);
+    nodes.push(p);
+  }
+  nodes.forEach((a,i)=>{
+    for(let j=i+1;j<nodes.length;j++){
+      const b=nodes[j],dist=Math.hypot(a[0]-b[0],a[1]-b[1]);
+      if(dist<R*.27){line([a,b],'rgba(132,211,196,.115)',1.0);
+        if((i+j)%3===0){const f=(t*.075+(i+j)*.09)%1;dot(a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,1.85,'#c4f4e8',.69)}
+      }
+    }
+    dot(a[0],a[1],2.4,i%3?'#b6e3fa':'#a5e9d3',.67);
+    if(i%4===0)orbit3((a[0]-W*.52)*.25,(a[1]-H*.53)*.25,18,10,35,t,.055,174,i);
+  });
+}
+function drawAwards(t){ // restrained stellar orbit and clustered brilliance, not trophies
+  bgWash(t,[]);stellarField(t,95);
+  const R=Math.min(W,H),cx=W*.52,cy=H*.52;
+  for(let r=0;r<5;r++)orbit3(0,0,R*(.12+r*.055),R*(.065+r*.036),40+r*14,t,.075,213,r*.22);
+  for(let i=0;i<13;i++){
+    const a=i*2.39996+t*.13,r=R*(.09+.27*((i*.618)%1));
+    const p=spacePoint(r*Math.cos(a),r*.7*Math.sin(a),75*Math.sin(i+t*.27),t);
+    dot(p[0],p[1],i%4===0?2.8:1.8,i%4===0?'#ead9b8':'#c5ddf7',i%4===0?.71:.53);
+    if(i%4===0){line([[p[0]-5,p[1]],[p[0]+5,p[1]]],'rgba(235,221,182,.13)',.7);line([[p[0],p[1]-5],[p[0],p[1]+5]],'rgba(235,221,182,.13)',.7)}
+  }
+  dot(cx,cy,2.6,'#e9e3d9',.65);
+}
+function drawGallery(t){ // quiet telescope-field stars and a delicate optical ring
+  bgWash(t,[]);stellarField(t,95);
+  const R=Math.min(W,H);
+  for(let i=0;i<3;i++)orbit3(0,0,R*(.15+i*.11),R*(.08+i*.055),80,t,.055,198,i*.17);
+}
+function drawContact(t){ // preserve the admired connected-signal aesthetic, now with stars
+  bgWash(t,[]);stellarField(t,68);
+  const nodes=Array.from({length:18},(_,i)=>[W*(.12+.76*((i*.618033)%1))+Math.sin(t*.34+i)*24,H*(.14+.72*((i*.41421)%1))+Math.cos(t*.29+i)*20]);
+  for(let i=0;i<nodes.length;i++){
+    const a=nodes[i];
+    for(let j=i+1;j<nodes.length;j++){
+      const b=nodes[j],d=Math.hypot(a[0]-b[0],a[1]-b[1]);
+      if(d<Math.min(W,H)*.3){line([a,b],'rgba(170,206,255,.14)',1.1);
+        const f=(t*.22+(i+j)*.11)%1;dot(a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,2.2,'#d6f3ff',.85)
+      }
+    }
+    dot(a[0],a[1],3.2,'#bfe5ff',.8);
+    g.beginPath();g.arc(a[0],a[1],10+((t*24+i*7)%42),0,Math.PI*2);g.strokeStyle='rgba(167,216,255,.12)';g.stroke();
+  }
+  const pts=[];for(let i=0;i<=120;i++){const x=i/120*W;pts.push([x,H*.52+Math.sin(i*.12-t*1.2)*26+Math.cos(i*.04+t*.8)*10])}
+  line(pts,'rgba(147,223,255,.20)',1.5);
+}
 function tintAmbientLines(seconds){const period=14,phase=(seconds/period)%1,hues=[168,205,255,286,334,42,168],grad=g.createLinearGradient(0,0,W,0);for(let i=0;i<=12;i++){const x=i/12,p=(x+phase)*(hues.length-1),h0=hues[Math.floor(p)%(hues.length-1)],h1=hues[(Math.floor(p)+1)%(hues.length-1)],hue=h0+(h1-h0)*(p%1);grad.addColorStop(x,`hsl(${hue},88%,70%)`)}g.save();g.globalCompositeOperation='source-atop';g.globalAlpha=.18;g.fillStyle=grad;g.fillRect(0,0,W,H);g.restore()}
 function scene(ms){scienceSpectrumSeconds=reduced.matches?0:ms/1000;const t=reduced.matches?0:(ms/1000)*.48,view=document.body.dataset.view||'home';g.clearRect(0,0,W,H);if(view==='home')drawHome(t);else if(view==='research')drawResearch(t);else if(view==='publications')drawPublications(t);else if(view==='talks')drawTalks(t);else if(view==='career')drawCareer(t);else if(view==='awards')drawAwards(t);else if(view==='gallery')drawGallery(t);else if(view==='contact')drawContact(t);else drawHome(t);tintAmbientLines(reduced.matches?0:ms/1000);if(!reduced.matches)requestAnimationFrame(scene)}
 size();addEventListener('resize',()=>{size();if(reduced.matches)scene(0)});addEventListener('hashchange',()=>{if(reduced.matches)scene(0)});requestAnimationFrame(scene);
