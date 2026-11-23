@@ -2097,8 +2097,8 @@ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 function size(){W=innerWidth;H=innerHeight;D=Math.min(devicePixelRatio||1,2);canvas.width=W*D;canvas.height=H*D;g.setTransform(D,0,0,D,0,0)}
 let scienceSpectrumSeconds=0;
 function scienceSpectrum(x,y){const phase=scienceSpectrumSeconds*(Math.PI*2/20);const hues=[170,202,236,266,312,192];const p=((x/Math.max(W,1))*.78+(y/Math.max(H,1))*.22+phase/(Math.PI*2))%1;const index=(p<0?p+1:p)*hues.length;const i=Math.floor(index)%hues.length,f=index-Math.floor(index);const h=hues[i]+(hues[(i+1)%hues.length]-hues[i])*f;return `hsla(${h},92%,78%,.42)`;}
-function line(points,col,width=1,alpha=1){g.save();g.globalAlpha=alpha;g.beginPath();points.forEach((p,i)=>i?g.lineTo(...p):g.moveTo(...p));g.strokeStyle=col;g.lineWidth=width;g.stroke();if(points.length){const m=points[Math.floor(points.length/2)];g.globalAlpha=alpha*.42;g.strokeStyle=scienceSpectrum(m[0],m[1]);g.lineWidth=width;g.stroke();}g.restore();}
-function dot(x,y,r,col,alpha=1){g.save();g.globalAlpha=alpha;g.beginPath();g.arc(x,y,r,0,Math.PI*2);g.fillStyle=col;g.fill();g.globalAlpha=alpha*.30;g.fillStyle=scienceSpectrum(x,y);g.fill();g.restore();}
+function line(points,col,width=1,alpha=1){g.save();g.globalAlpha=alpha;g.beginPath();points.forEach((p,i)=>i?g.lineTo(...p):g.moveTo(...p));g.strokeStyle=col;g.lineWidth=width;g.stroke();if(points.length){const m=points[Math.floor(points.length/2)];g.globalAlpha=alpha*.64;g.strokeStyle=scienceSpectrum(m[0],m[1]);g.lineWidth=width;g.stroke();}g.restore();}
+function dot(x,y,r,col,alpha=1){g.save();g.globalAlpha=alpha;g.beginPath();g.arc(x,y,r,0,Math.PI*2);g.fillStyle=col;g.fill();g.globalAlpha=alpha*.48;g.fillStyle=scienceSpectrum(x,y);g.fill();g.restore();}
 function glow(x,y,r,col,a=.24){const grd=g.createRadialGradient(x,y,0,x,y,r);grd.addColorStop(0,col.replace('ALPHA',a));grd.addColorStop(.55,col.replace('ALPHA',a*.34));grd.addColorStop(1,'transparent');g.fillStyle=grd;g.fillRect(x-r,y-r,r*2,r*2)}
 function roundedRect(x,y,w,h,r,fill,stroke){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);if(fill){g.fillStyle=fill;g.fill()}if(stroke){g.strokeStyle=stroke;g.stroke()}}
 function bgWash(t,tones){
@@ -2149,24 +2149,40 @@ function stream3(t,y,phase,col,alpha=.11,swing=16){
   line(pts,col,1.2,alpha);
   return pts;
 }
-function drawHome(t){ // condensed, paired electron field and phase-coherent supercurrent
-  bgWash(t,[]);stellarField(t,74);
+function drawHome(t){ // artistic Cooper pair field; spin singlets (up/down) and equal-spin triplets (up/up, down/down)
+  bgWash(t,[]);stellarField(t,70);
   const R=Math.min(W,H);
-  for(let j=0;j<6;j++)stream3(t,(j-2.5)*R*.12,j*.62,'#7fbded',.12,10+j*2);
-  for(let i=0;i<13;i++){
-    const row=Math.floor(i/5),col=i%5;
-    const xx=(col-2)*Math.min(W*.16,165)+(row%2)*37;
-    const yy=(row-1)*Math.min(H*.23,166);
-    const zz=130*Math.sin(i*1.8+t*.2);
-    const a=spacePoint(xx+10*Math.sin(t*.22+i),yy+7*Math.cos(t*.26+i),zz,t);
-    const sep=(9+1.2*Math.sin(t*.65+i))*a[2];
-    const dx=sep*Math.cos(t*.42+i*1.34),dy=sep*.40*Math.sin(t*.42+i*1.34);
-    // The pair shares a single, compact envelope, not two detached planetary orbits.
-    g.save();g.beginPath();g.ellipse(a[0],a[1],sep*1.65,sep*.85,-.2,0,Math.PI*2);
-    g.strokeStyle='rgba(166,203,245,.13)';g.lineWidth=.9;g.stroke();g.restore();
-    line([[a[0]-dx,a[1]-dy],[a[0]+dx,a[1]+dy]],'rgba(174,211,244,.14)',1.05);
-    dot(a[0]-dx,a[1]-dy,2.7*a[2],'#a2dfff',.64);
-    dot(a[0]+dx,a[1]+dy,2.7*a[2],'#ceb9ff',.64);
+  for(let j=0;j<5;j++)stream3(t,(j-2)*R*.14,j*.61,'#7fbded',.085,8+j*2);
+  function electron(x,y,r,up,alpha){
+    // Spin arrow is INSIDE each electron, not detached from it.
+    g.save();g.globalAlpha=alpha;
+    g.beginPath();g.arc(x,y,r,0,Math.PI*2);
+    g.fillStyle='rgba(13,27,42,.94)';g.fill();
+    g.strokeStyle=up?'#9cdfff':'#d6baff';g.lineWidth=Math.max(1,1.18*r/7);g.stroke();
+    const sy=up?1:-1, headY=y-sy*r*.53, tailY=y+sy*r*.49;
+    g.beginPath();g.moveTo(x,tailY);g.lineTo(x,headY);
+    g.moveTo(x-r*.32,headY+sy*r*.33);g.lineTo(x,headY);g.lineTo(x+r*.32,headY+sy*r*.33);
+    g.strokeStyle=up?'#beeaff':'#e8d7ff';g.lineWidth=Math.max(1,1.15*r/7);
+    g.lineCap='round';g.lineJoin='round';g.stroke();g.restore();
+  }
+  for(let i=0;i<12;i++){
+    const row=Math.floor(i/4),col=i%4;
+    const xx=(col-1.5)*Math.min(W*.20,216)+(row%2)*27;
+    const yy=(row-1)*Math.min(H*.27,175);
+    const zz=100*Math.sin(i*1.8+t*.16);
+    const p=spacePoint(xx+7*Math.sin(t*.19+i),yy+5*Math.cos(t*.22+i),zz,t);
+    const spinType=i%4; // 0,3 singlet; 1 triplet +1; 2 triplet -1
+    const up1=spinType!==2,up2=spinType===1?true:spinType===2?false:false;
+    const spread=13*p[2], tilt=.18*Math.sin(t*.42+i*.83);
+    const ex=spread*Math.cos(tilt),ey=spread*.33*Math.sin(tilt);
+    const r=Math.max(5.5,6.65*p[2]);
+    const x1=p[0]-ex,y1=p[1]-ey,x2=p[0]+ex,y2=p[1]+ey;
+    // Soft, compact common pair envelope makes the two electrons read as one pair.
+    g.save();g.beginPath();g.ellipse(p[0],p[1],spread+r+4,r*1.55,tilt*.35,0,Math.PI*2);
+    g.strokeStyle='rgba(147,211,248,.15)';g.lineWidth=.9;g.stroke();g.restore();
+    line([[x1+r*.92,y1],[x2-r*.92,y2]],'rgba(164,210,241,.20)',1.0);
+    electron(x1,y1,r,up1,.76);electron(x2,y2,r,up2,.76);
+    dot(p[0],p[1],.8,'#e0efff',.34);
   }
 }
 function drawResearch(t){ // pinning and motion of magnetic flux vortices
@@ -2189,27 +2205,21 @@ function drawResearch(t){ // pinning and motion of magnetic flux vortices
     line([[p[0],p[1]-23],[p[0],p[1]+23]],'rgba(143,197,250,.12)',1.05);
   });
 }
-function drawPublications(t){ // quiet orbital tracks: knowledge circulating and connecting
-  bgWash(t,[]);stellarField(t,83);
+function drawPublications(t){ // simple small citation constellation, no large orbit lattice
+  bgWash(t,[]);stellarField(t,66);
   const R=Math.min(W,H);
-  const points=[];
-  for(let i=0;i<11;i++){
-    const a=i*2.39996+t*.055;
-    const r=R*(.10+.31*(i/11));
-    const p=spacePoint(r*Math.cos(a),r*.63*Math.sin(a),95*Math.sin(a*1.7+i),t);
-    points.push(p);
-    orbit3(r*Math.cos(a)*.18,r*.18*Math.sin(a),16+(i%3)*8,9+(i%3)*5,45,t,.07,215,i);
-    dot(p[0],p[1],2.1,'#acd9f7',.60);
-  }
-  for(let i=0;i<points.length;i++){
-    for(let j=i+1;j<points.length;j++){
-      const a=points[i],b=points[j],d=Math.hypot(a[0]-b[0],a[1]-b[1]);
-      if(d<R*.26){line([[a[0],a[1]],[b[0],b[1]]],'rgba(151,189,232,.11)',.9);
-        if((i+j)%4===0){const f=(t*.08+(i+j)*.09)%1;dot(a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,1.7,'#d9edff',.70)}
-      }
-    }
-  }
-  for(let k=0;k<3;k++)orbit3(0,0,R*(.24+k*.075),R*(.12+k*.042),60,t,.065,215,k*.23);
+  const base=[[-.21,-.10],[-.05,-.22],[.12,-.10],[.23,.10],[-.12,.16],[.04,.23]];
+  const nodes=base.map(([x,y],i)=>spacePoint(x*R*.95+5*Math.sin(t*.18+i),y*R*.90+4*Math.cos(t*.21+i),48*Math.sin(i*1.3+t*.17),t));
+  const edges=[[0,1],[1,2],[2,3],[3,5],[5,4],[4,0],[1,4],[2,5]];
+  edges.forEach(([i,j],k)=>{
+    const a=nodes[i],b=nodes[j];
+    line([[a[0],a[1]],[b[0],b[1]]],'rgba(150,195,235,.14)',1.05);
+    if(k%2===0){const f=(t*.075+k*.13)%1;dot(a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,1.5,'#d9edff',.68)}
+  });
+  nodes.forEach((p,i)=>{
+    dot(p[0],p[1],i===2?3.35:2.7,i%2===0?'#9fdfff':'#d5bcff',.74);
+    if(i===1||i===4){g.save();g.beginPath();g.ellipse(p[0],p[1],14,8,t*.12+i*.4,0,Math.PI*2);g.strokeStyle='rgba(169,209,243,.11)';g.lineWidth=.9;g.stroke();g.restore()}
+  });
 }
 function drawTalks(t){ // expanding, low-amplitude phase waves carried through space
   bgWash(t,[]);stellarField(t,76);
@@ -2232,23 +2242,18 @@ function drawTalks(t){ // expanding, low-amplitude phase waves carried through s
   }
   dot(cx,cy,2.8,'#b3eaff',.64);
 }
-function drawCareer(t){ // research community: a small constellation of connected scientists
-  bgWash(t,[]);stellarField(t,75);
-  const R=Math.min(W,H),nodes=[];
-  for(let i=0;i<12;i++){
-    const x=(i*.618033%1-.5)*W*.78, y=(i*.414213%1-.5)*H*.70;
-    const p=spacePoint(x+8*Math.sin(t*.19+i),y+8*Math.cos(t*.21+i),70*Math.sin(i*1.8+t*.14),t);
-    nodes.push(p);
-  }
-  nodes.forEach((a,i)=>{
-    for(let j=i+1;j<nodes.length;j++){
-      const b=nodes[j],dist=Math.hypot(a[0]-b[0],a[1]-b[1]);
-      if(dist<R*.27){line([a,b],'rgba(132,211,196,.115)',1.0);
-        if((i+j)%3===0){const f=(t*.075+(i+j)*.09)%1;dot(a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,1.85,'#c4f4e8',.69)}
-      }
-    }
-    dot(a[0],a[1],2.4,i%3?'#b6e3fa':'#a5e9d3',.67);
-    if(i%4===0)orbit3((a[0]-W*.52)*.25,(a[1]-H*.53)*.25,18,10,35,t,.055,174,i);
+function drawCareer(t){ // minimal academic-service constellation: a few connected people / groups
+  bgWash(t,[]);stellarField(t,65);
+  const R=Math.min(W,H);
+  const centers=[[-.26,-.05],[-.07,-.20],[.18,-.12],[.28,.14],[.01,.21],[-.22,.22]];
+  const pts=centers.map(([x,y],i)=>spacePoint(x*R*.94+6*Math.sin(t*.16+i),y*R*.83+5*Math.cos(t*.17+i),56*Math.sin(i*1.9+t*.15),t));
+  [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[1,4]].forEach(([i,j],k)=>{
+    const a=pts[i],b=pts[j];line([[a[0],a[1]],[b[0],b[1]]],'rgba(143,209,195,.13)',1.05);
+    const f=(t*.07+k*.16)%1;dot(a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,1.65,'#c0f3e6',.73);
+  });
+  pts.forEach((p,i)=>{
+    dot(p[0],p[1],i%3===0?3.1:2.6,i%2?'#bee5ff':'#a6ead5',.73);
+    if(i===0||i===3){g.save();g.beginPath();g.ellipse(p[0],p[1],12,7,t*.11+i,0,Math.PI*2);g.strokeStyle='rgba(152,225,206,.12)';g.lineWidth=.85;g.stroke();g.restore()}
   });
 }
 function drawAwards(t){ // restrained stellar orbit and clustered brilliance, not trophies
@@ -2285,7 +2290,22 @@ function drawContact(t){ // preserve the admired connected-signal aesthetic, now
   const pts=[];for(let i=0;i<=120;i++){const x=i/120*W;pts.push([x,H*.52+Math.sin(i*.12-t*1.2)*26+Math.cos(i*.04+t*.8)*10])}
   line(pts,'rgba(147,223,255,.20)',1.5);
 }
-function tintAmbientLines(seconds){const period=14,phase=(seconds/period)%1,hues=[168,205,255,286,334,42,168],grad=g.createLinearGradient(0,0,W,0);for(let i=0;i<=12;i++){const x=i/12,p=(x+phase)*(hues.length-1),h0=hues[Math.floor(p)%(hues.length-1)],h1=hues[(Math.floor(p)+1)%(hues.length-1)],hue=h0+(h1-h0)*(p%1);grad.addColorStop(x,`hsl(${hue},88%,70%)`)}g.save();g.globalCompositeOperation='source-atop';g.globalAlpha=.18;g.fillStyle=grad;g.fillRect(0,0,W,H);g.restore()}
+function tintAmbientLines(seconds){
+  const period=17,phase=((seconds/period)%1+1)%1;
+  const hues=[166,199,238,277,322,40];
+  const gradient=g.createLinearGradient(0,0,W,H*.22);
+  for(let k=0;k<=24;k++){
+    const pos=k/24,shift=(pos+phase)%1,segment=shift*hues.length;
+    const ii=Math.floor(segment),f=segment-ii;
+    const h0=hues[ii%hues.length],h1=hues[(ii+1)%hues.length];
+    const a0=h0===40?400:h0, a1=h1===40?400:h1;
+    const hue=(a0+(a1-a0)*f)%360;
+    gradient.addColorStop(pos,`hsl(${hue},74%,74%)`);
+  }
+  g.save();g.globalCompositeOperation='source-atop';
+  g.globalAlpha=.42;g.fillStyle=gradient;g.fillRect(0,0,W,H);
+  g.restore();
+}
 function scene(ms){scienceSpectrumSeconds=reduced.matches?0:ms/1000;const t=reduced.matches?0:(ms/1000)*.48,view=document.body.dataset.view||'home';g.clearRect(0,0,W,H);if(view==='home')drawHome(t);else if(view==='research')drawResearch(t);else if(view==='publications')drawPublications(t);else if(view==='talks')drawTalks(t);else if(view==='career')drawCareer(t);else if(view==='awards')drawAwards(t);else if(view==='gallery')drawGallery(t);else if(view==='contact')drawContact(t);else drawHome(t);tintAmbientLines(reduced.matches?0:ms/1000);if(!reduced.matches)requestAnimationFrame(scene)}
 size();addEventListener('resize',()=>{size();if(reduced.matches)scene(0)});addEventListener('hashchange',()=>{if(reduced.matches)scene(0)});requestAnimationFrame(scene);
 })();
