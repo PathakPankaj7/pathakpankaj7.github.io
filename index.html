@@ -2027,30 +2027,71 @@ function dot(x,y,r,col,alpha=1){
 function glow(x,y,r,col,a=.28){const grd=g.createRadialGradient(x,y,0,x,y,r);grd.addColorStop(0,col.replace('ALPHA',a));grd.addColorStop(.55,col.replace('ALPHA',a*.35));grd.addColorStop(1,'transparent');g.fillStyle=grd;g.fillRect(x-r,y-r,r*2,r*2)}
 function roundedRect(x,y,w,h,r,fill,stroke){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);if(fill){g.fillStyle=fill;g.fill()}if(stroke){g.strokeStyle=stroke;g.stroke()}}
 function bgWash(t,tones){const R=Math.min(W,H);tones.forEach((tone,i)=>{let x=W*(tone.x+.04*Math.sin(t*tone.sx+i)),y=H*(tone.y+.05*Math.cos(t*tone.sy+i*1.7));let r=R*tone.r;let a=g.createRadialGradient(x,y,0,x,y,r);a.addColorStop(0,`hsla(${tone.h},${tone.s}%,${tone.l}%,${tone.a})`);a.addColorStop(1,'transparent');g.fillStyle=a;g.fillRect(0,0,W,H)})}
-function drawHome(t){ // magnetisation / spin texture
- bgWash(t,[{x:.18,y:.22,r:.72,h:168,s:72,l:33,a:.22,sx:.28,sy:.19},{x:.72,y:.56,r:.66,h:205,s:68,l:32,a:.20,sx:.22,sy:.26},{x:.52,y:.82,r:.56,h:182,s:44,l:24,a:.10,sx:.15,sy:.18}]);
- const cx=W*.56, cy=H*.52, R=Math.min(W,H)*.31;
- for(let ring=0; ring<8; ring++){
-   let pts=[]; const rr=R*(.36+ring*.11), spin=t*0.55+ring*.45;
-   for(let a=0;a<=Math.PI*2+.1;a+=Math.PI/42){
-     const mod=Math.sin(a*4-spin)*16 + Math.cos(a*7+spin)*7;
-     pts.push([cx+Math.cos(a)*(rr+mod), cy+Math.sin(a)*(rr*.58+mod*.42)]);
+function drawHome(t){ // Cooper-pair condensate: softly coupled electrons in a 3D phase field
+ // Restrained blue / violet / cool jade, with a barely visible warm complement.
+ bgWash(t,[
+   {x:.24,y:.30,r:.62,h:212,s:57,l:27,a:.12,sx:.16,sy:.15},
+   {x:.76,y:.57,r:.64,h:258,s:43,l:26,a:.10,sx:.12,sy:.17},
+   {x:.49,y:.83,r:.54,h:175,s:48,l:23,a:.06,sx:.13,sy:.12}
+ ]);
+ const small=Math.min(W,H);
+ const perspective=(x,y,z)=>{
+   const s=1/(1+z*.0016);
+   return [W*.50+(x-W*.50)*s,y*s+(H*.5)*(1-s),s];
+ };
+ // A weak, curved phase-coherent current: spaced ribbons imply depth without a glowing disc.
+ for(let j=0;j<7;j++){
+   const pts=[];
+   const phase=j*.62;
+   for(let i=0;i<=108;i++){
+     const u=i/108;
+     const x=-W*.10+W*1.2*u;
+     const y=H*(.22+j*.098)+Math.sin(u*8.1-t*.30+phase)*(10+2*j)
+       +Math.sin(u*3.5+t*.18+j*.75)*13;
+     const depth=130*Math.cos(u*5.8-t*.17+j*.38);
+     const p=perspective(x,y,depth);
+     pts.push([p[0],p[1]]);
    }
-   line(pts,`hsla(${165+ring*4},88%,70%,${0.08+ring*0.01})`,1.2);
+   line(pts,`hsla(${196+j*9},80%,73%,${.075+(j%3)*.012})`,.9+(j%2)*.2);
  }
- for(let row=0; row<6; row++){
-   for(let col=0; col<10; col++){
-     const u=col/9, v=row/5;
-     const x=W*.14+u*W*.74 + Math.sin(t+row*.8+col*.35)*8;
-     const y=H*.16+v*H*.77 + Math.cos(t*1.2+col*.55)*10;
-     const ang=Math.sin(t*1.7+u*5+v*4)*1.8;
-     line([[x-Math.cos(ang)*12,y-Math.sin(ang)*12],[x+Math.cos(ang)*12,y+Math.sin(ang)*12]],'rgba(168,244,220,.48)',1.7);
-     line([[x+Math.cos(ang)*12,y+Math.sin(ang)*12],[x+Math.cos(ang)*6-Math.sin(ang)*5,y+Math.sin(ang)*6+Math.cos(ang)*5]],'rgba(168,244,220,.48)',1.7);
-     line([[x+Math.cos(ang)*12,y+Math.sin(ang)*12],[x+Math.cos(ang)*6+Math.sin(ang)*5,y+Math.sin(ang)*6-Math.cos(ang)*5]],'rgba(168,244,220,.48)',1.7);
+ // Electron pairs: two luminous charges revolve around a shared centre.
+ // Their separation, companion bridge and perspective change together as one coherent motif.
+ const columns=7, rows=4;
+ for(let row=0;row<rows;row++){
+   for(let col=0;col<columns;col++){
+     const k=row*columns+col;
+     const u=(col+.5+(row%2)*.25)/columns;
+     const v=(row+.55)/rows;
+     const px=W*(.105+.80*u)+Math.sin(t*.21+k*1.72)*9;
+     const py=H*(.13+.75*v)+Math.cos(t*.23+k*.91)*7;
+     const depth=125*Math.sin(k*1.93+t*.24);
+     const o=perspective(px,py,depth);
+     const r=(8.5+(k%3)*2.5)*o[2];
+     const a=t*(.68+(k%4)*.09)+k*2.399;
+     const dx=Math.cos(a)*r;
+     const dy=Math.sin(a)*r*.55;
+     const zTilt=Math.sin(a*.8+k*.2)*r*.20;
+     const ax=o[0]+dx, ay=o[1]+dy+zTilt;
+     const bx=o[0]-dx, by=o[1]-dy-zTilt;
+     const alpha=(.20+.11*o[2])*(.82+.18*Math.sin(t*.5+k));
+     // Coupling is diffuse; it is not a rigid rod or a chemical bond.
+     line([[ax,ay],[o[0],o[1]],[bx,by]],`rgba(164,212,255,${alpha*.42})`,1.05);
+     dot(ax,ay,1.95*o[2],'#9bdbff',alpha+.10);
+     dot(bx,by,1.95*o[2],'#dfb9ff',alpha+.10);
+     // An understated pairing halo is strongest around the moving pair.
+     if(k%3===0){
+       g.save();g.globalAlpha=.11;g.strokeStyle='#91d8eb';g.lineWidth=.7;
+       g.beginPath();g.ellipse(o[0],o[1],r*1.65,r*.88,-.20,0,Math.PI*2);g.stroke();g.restore();
+     }
    }
  }
- for(let i=0;i<28;i++){const a=(i/28)*Math.PI*2+t*.55;const rr=R*(.4+.55*((i%5)/5));dot(cx+Math.cos(a)*rr, cy+Math.sin(a)*rr*.62, 2.3+(i%3)*.4, '#b9fff0', .82)}
- glow(W*.54,H*.46,Math.min(W,H)*.24,'rgba(27,210,167,ALPHA)',.26);
+ // Small coherent glints drift through the condensate and fade at the edges.
+ for(let i=0;i<26;i++){
+   const u=((i*.618034+t*.012)%1),v=(i*.414214)%1;
+   const x=W*(.08+.84*u),y=H*(.12+.77*v)+8*Math.sin(t*.47+i);
+   dot(x,y,.7+(i%3)*.24,i%2?'#a6dfff':'#c9baff',.10+(i%4)*.025);
+ }
+ glow(W*.65,H*.53,small*.19,'rgba(83,132,215,ALPHA)',.065);
 }
 function drawResearch(t){ // superconductivity / vortex / cryogenic hybrid textures
  bgWash(t,[{x:.22,y:.28,r:.75,h:198,s:72,l:30,a:.22,sx:.25,sy:.16},{x:.76,y:.42,r:.65,h:258,s:42,l:28,a:.16,sx:.21,sy:.22},{x:.54,y:.82,r:.5,h:180,s:48,l:22,a:.10,sx:.18,sy:.14}]);
