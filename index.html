@@ -2107,8 +2107,19 @@ function stream3(t,y,phase,col,alpha=.11,swing=16){
 }
 function drawHome(t){
   // Compact schematic motifs: singlet pairs, flux vortices and aligned FM spins.
-  bgWash(t,[]);stellarField(t,42);
-  const scale=Math.min(1,W/650), cols=W<600?3:5, rows=4;
+  bgWash(t,[]);
+  const bio=document.querySelector('#home .bio-text'), portrait=document.querySelector('#home .portrait-shell');
+  if(!bio||!portrait)return;
+  const b=bio.getBoundingClientRect(), p=portrait.getBoundingClientRect();
+  const left=Math.max(0,b.left-16),right=Math.min(W,b.right+16),top=Math.max(0,b.top-16),bottom=Math.min(H,b.bottom+16);
+  if(right<=left||bottom<=top)return;
+  const pad=28, px=p.left-pad,py=p.top-pad,pw=p.width+2*pad,ph=p.height+2*pad;
+  // Clip every animated pixel to the biography area, excluding the portrait buffer.
+  g.save();g.beginPath();g.rect(left,top,right-left,bottom-top);g.clip();
+  g.beginPath();g.rect(0,0,W,H);g.rect(px,py,pw,ph);g.clip('evenodd');
+  stellarField(t,42);
+  const bw=right-left,bh=bottom-top;
+  const scale=Math.min(1,bw/650),cols=bw<600?3:5,rows=Math.max(2,Math.min(5,Math.round(bh/95)));
   function arrow(x,y,dx,dy,color){
     const a=Math.atan2(dy,dx), X=x+dx,Y=y+dy;
     line([[x,y],[X,Y],[X-3*scale*Math.cos(a-.5),Y-3*scale*Math.sin(a-.5)]],color,.9);
@@ -2119,8 +2130,8 @@ function drawHome(t){
   }
   for(let i=0;i<cols*rows;i++){
     const col=i%cols,row=Math.floor(i/cols),phase=i*1.37;
-    const p=spacePoint(((col+.5)/cols-.52)*W*.91+9*Math.sin(phase+t*.22),((row+.5)/rows-.53)*H*.88+7*Math.cos(phase+t*.19),65*Math.sin(phase+t*.17),t);
-    const x=p[0],y=p[1],k=scale*p[2], type=(row+col)%3;
+    const depth=65*Math.sin(phase+t*.17), perspective=1/(1+depth*.00095);
+    const x=left+bw*(col+.5)/cols+9*Math.sin(phase+t*.22),y=top+bh*(row+.5)/rows+7*Math.cos(phase+t*.19),k=scale*perspective,type=(row+col)%3;
     const cool='rgba(143,218,247,.53)', warm='rgba(249,187,124,.53)';
     if(type===0){ // conventional opposite-spin Cooper pair (schematic)
       const d=6*k,r=3.8*k;
@@ -2141,6 +2152,7 @@ function drawHome(t){
     }
     g.save();g.font=`${Math.max(9,10*k)}px system-ui, sans-serif`;g.textAlign='center';g.fillStyle=type===2?'rgba(249,187,124,.44)':'rgba(151,220,239,.43)';g.fillText(['Δ','Φ₀','M'][type],x,y+19*k);g.restore();
   }
+  g.restore();
 }
 function drawResearch(t){ // pinning and motion of magnetic flux vortices
   bgWash(t,[]);stellarField(t,71);
@@ -2260,7 +2272,7 @@ function tintAmbientLines(seconds){
   g.restore();
 }
 function scene(ms){scienceSpectrumSeconds=reduced.matches?0:ms/1000;const t=reduced.matches?0:(ms/1000)*.48,view=document.body.dataset.view||'home';g.clearRect(0,0,W,H);if(view==='home')drawHome(t);else if(view==='research')drawResearch(t);else if(view==='publications')drawPublications(t);else if(view==='talks')drawTalks(t);else if(view==='career')drawCareer(t);else if(view==='awards')drawAwards(t);else if(view==='contact')drawContact(t);else drawHome(t);tintAmbientLines(reduced.matches?0:ms/1000);if(!reduced.matches)requestAnimationFrame(scene)}
-size();addEventListener('resize',()=>{size();if(reduced.matches)scene(0)});addEventListener('hashchange',()=>{if(reduced.matches)scene(0)});requestAnimationFrame(scene);
+size();addEventListener('scroll',()=>{if(reduced.matches)scene(0)},{passive:true});addEventListener('resize',()=>{size();if(reduced.matches)scene(0)});addEventListener('hashchange',()=>{if(reduced.matches)scene(0)});requestAnimationFrame(scene);
 })();
 </script><script>document.querySelectorAll('nav a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{if(typeof route==='function'){e.preventDefault();history.pushState(null,'',a.getAttribute('href'));route();}}));</script><script id="v93-research-guide-script">(()=>{
 const section=document.getElementById('research'), rows=[...section.querySelectorAll('.research-row')];if(!rows.length)return;
