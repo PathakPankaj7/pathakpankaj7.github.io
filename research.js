@@ -17,7 +17,7 @@ window.RESEARCH = [
   },
   {
     "animation": "optical",
-    "title": "Magnetoelectric spintronics & optical control",
+    "title": "Magnetoelectric spintronic devices & their optical control",
     "description": "I explore the coupling between electric, optical, elastic and magnetic degrees of freedom in magnetoelectric heterostructures. My work investigates how photo-induced strain can modify magnetoresistance and magnetisation dynamics in ferromagnetic thin films integrated with ferroelectric substrates. Electrical transport measurements and ferromagnetic resonance spectroscopy provide complementary ways to probe these effects. The long-term aim is to develop low-energy methods of controlling magnetic states for nonvolatile memory, logic and beyond-CMOS devices."
   },
   {
