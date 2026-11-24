@@ -2106,52 +2106,103 @@ function stream3(t,y,phase,col,alpha=.11,swing=16){
   return pts;
 }
 function drawHome(t){
-  // Compact schematic motifs: singlet pairs, flux vortices and aligned FM spins.
+  // Spread smaller superconductivity / ferromagnetism motifs across the whole home panel,
+  // while keeping the portrait area clean and using the nav-hover mint / white palette.
   bgWash(t,[]);
-  const bio=document.querySelector('#home .bio-text'), portrait=document.querySelector('#home .portrait-shell');
-  if(!bio||!portrait)return;
-  const b=bio.getBoundingClientRect(), p=portrait.getBoundingClientRect();
-  const left=Math.max(0,b.left-16),right=Math.min(W,b.right+16),top=Math.max(0,b.top-16),bottom=Math.min(H,b.bottom+16);
+  const home=document.getElementById('home'), portrait=document.querySelector('#home .portrait-shell');
+  if(!home||!portrait)return;
+  const h=home.getBoundingClientRect(), p=portrait.getBoundingClientRect();
+  const left=Math.max(0,h.left+26), right=Math.min(W,h.right-26), top=Math.max(0,h.top+24), bottom=Math.min(H,h.bottom-24);
   if(right<=left||bottom<=top)return;
-  const pad=28, px=p.left-pad,py=p.top-pad,pw=p.width+2*pad,ph=p.height+2*pad;
-  // Clip every animated pixel to the biography area, excluding the portrait buffer.
-  g.save();g.beginPath();g.rect(left,top,right-left,bottom-top);g.clip();
+  const pad=Math.max(34,Math.min(54,Math.round(Math.min(p.width,p.height)*.18)));
+  const px=p.left-pad, py=p.top-pad, pw=p.width+2*pad, ph=p.height+2*pad;
+  g.save();
+  g.beginPath();g.rect(left,top,right-left,bottom-top);g.clip();
   g.beginPath();g.rect(0,0,W,H);g.rect(px,py,pw,ph);g.clip('evenodd');
-  stellarField(t,42);
-  const bw=right-left,bh=bottom-top;
-  const scale=Math.min(1,bw/650),cols=bw<600?3:5,rows=Math.max(2,Math.min(5,Math.round(bh/95)));
-  function arrow(x,y,dx,dy,color){
-    const a=Math.atan2(dy,dx), X=x+dx,Y=y+dy;
-    line([[x,y],[X,Y],[X-3*scale*Math.cos(a-.5),Y-3*scale*Math.sin(a-.5)]],color,.9);
-    line([[X,Y],[X-3*scale*Math.cos(a+.5),Y-3*scale*Math.sin(a+.5)]],color,.9);
+
+  stellarField(t,34);
+
+  const bw=right-left,bh=bottom-top,area=bw*bh;
+  const count=Math.max(7,Math.min(13,Math.round(area/76000)));
+  const minGap=Math.max(74,Math.min(128,Math.min(bw,bh)*.17));
+  const margin=Math.max(20,Math.min(42,Math.min(bw,bh)*.06));
+  const points=[];
+  function inPortrait(x,y){return x>px && x<px+pw && y>py && y<py+ph;}
+  function farEnough(x,y){return points.every(([ax,ay])=>Math.hypot(ax-x,ay-y)>minGap);}
+
+  let seed=0;
+  while(points.length<count && seed<count*24){
+    const fx=(seed*.61803398875)%1, fy=(seed*.41421356237+.19)%1;
+    const x=left+margin+fx*Math.max(1,bw-2*margin);
+    const y=top+margin+fy*Math.max(1,bh-2*margin);
+    if(!inPortrait(x,y) && farEnough(x,y)) points.push([x,y]);
+    seed++;
   }
-  function ring(x,y,rx,ry,angle,color){
-    g.save();g.beginPath();g.ellipse(x,y,rx,ry,angle,0,Math.PI*2);g.strokeStyle=color;g.lineWidth=.85;g.stroke();g.restore();
+  if(!points.length){g.restore();return;}
+
+  function arrow(x,y,dx,dy,color,width){
+    const a=Math.atan2(dy,dx), X=x+dx, Y=y+dy, head=3.6*width;
+    line([[x,y],[X,Y]],color,width,.96);
+    line([[X,Y],[X-head*Math.cos(a-.52),Y-head*Math.sin(a-.52)]],color,width,.96);
+    line([[X,Y],[X-head*Math.cos(a+.52),Y-head*Math.sin(a+.52)]],color,width,.96);
   }
-  for(let i=0;i<cols*rows;i++){
-    const col=i%cols,row=Math.floor(i/cols),phase=i*1.37;
-    const depth=65*Math.sin(phase+t*.17), perspective=1/(1+depth*.00095);
-    const x=left+bw*(col+.5)/cols+9*Math.sin(phase+t*.22),y=top+bh*(row+.5)/rows+7*Math.cos(phase+t*.19),k=scale*perspective,type=(row+col)%3;
-    const cool='rgba(143,218,247,.53)', warm='rgba(249,187,124,.53)';
-    if(type===0){ // conventional opposite-spin Cooper pair (schematic)
-      const d=6*k,r=3.8*k;
-      ring(x,y,12*k,6.8*k,.12*Math.sin(t*.4+phase),'rgba(141,216,247,.27)');
-      line([[x-d,y],[x+d,y]],cool,.7);
-      for(const side of [-1,1]){ring(x+side*d,y,r,r,0,cool);arrow(x+side*d,y+side*2*k,0,-side*4*k,cool);}
-    }else if(type===1){ // quantized flux line with circulating supercurrent
-      const tilt=.17*Math.sin(t*.45+phase), ry=(3.1+.7*Math.sin(t*.4+phase))*k;
-      for(const level of [-1,0,1])ring(x,y+level*5*k,9*k,ry,tilt,'rgba(119,230,211,.38)');
-      arrow(x,y+10*k,0,-22*k,'rgba(151,236,224,.56)');
-      const a=t*.75+phase;dot(x+9*k*Math.cos(a),y+ry*Math.sin(a),1.4*k,'#a8f5e5',.65);
-    }else{ // ferromagnetic domain: parallel moments with coherent precession
-      const a=.30*Math.sin(t*.65+phase), dx=8*k*Math.sin(a),dy=-8*k*Math.cos(a);
-      for(let j=0;j<3;j++)for(let l=0;l<2;l++){
-        const X=x+(j-1)*7*k+(l-.5)*2*k,Y=y+(l-.5)*9*k;
-        dot(X,Y,1.25*k,'#efc69c',.45);arrow(X,Y,dx,dy,warm);
+  function ring(x,y,rx,ry,angle,color,width=.95,alpha=.95){
+    g.save();g.globalAlpha=alpha;g.beginPath();g.ellipse(x,y,rx,ry,angle,0,Math.PI*2);g.strokeStyle=color;g.lineWidth=width;g.stroke();g.restore();
+  }
+
+  points.forEach(([ax,ay],i)=>{
+    const phase=i*1.91;
+    const driftX=12*Math.sin(t*.88+phase)+6*Math.cos(t*.37+phase*1.4);
+    const driftY=9*Math.cos(t*.76+phase*1.17)+4*Math.sin(t*.31+phase);
+    const depth=.9+.12*Math.sin(t*.52+phase);
+    const k=(.99+.20*Math.sin(phase+t*.41))*depth;
+    const x=ax+driftX, y=ay+driftY;
+    const type=i%3;
+    const mint='rgba(123,216,191,.78)';
+    const mintSoft='rgba(123,216,191,.38)';
+    const glowMint='rgba(16,163,127,.20)';
+    const softWhite='rgba(245,247,246,.76)';
+    const slate='rgba(35,39,38,.58)';
+    const lineW=.88*k;
+
+    glow(x,y,18+10*k,glowMint,.18);
+    g.save();
+    g.fillStyle=slate;
+    g.globalAlpha=.22;
+    g.beginPath();g.arc(x,y,11+4*k,0,Math.PI*2);g.fill();
+    g.restore();
+
+    if(type===0){
+      const d=5.8*k,r=3.2*k,theta=.24*Math.sin(t*.74+phase);
+      ring(x,y,12*k,6.5*k,theta,mintSoft,.95,.92);
+      line([[x-d,y],[x+d,y]],mint,.78*k,.9);
+      for(const side of [-1,1]){
+        ring(x+side*d,y,r,r,0,softWhite,.92,.92);
+        arrow(x+side*d,y+side*1.6*k,0,-side*4.2*k,mint,lineW);
+      }
+    }else if(type===1){
+      const tilt=.24*Math.sin(t*.82+phase), ry=(2.9+.55*Math.sin(t*.71+phase))*k;
+      for(const level of [-1,0,1]) ring(x,y+level*4.6*k,8.5*k,ry,tilt,mintSoft,.88,.9);
+      arrow(x,y+9*k,0,-20*k,mint,.92*k);
+      const a=t*1.3+phase;
+      dot(x+8*k*Math.cos(a),y+ry*Math.sin(a),1.55*k,'#f5f7f6',.76);
+    }else{
+      const pre=.42*Math.sin(t*.96+phase), dx=7.4*k*Math.sin(pre), dy=-7.4*k*Math.cos(pre);
+      for(let j=0;j<3;j++) for(let l=0;l<2;l++){
+        const X=x+(j-1)*6.3*k+(l-.5)*1.8*k, Y=y+(l-.5)*8.1*k;
+        dot(X,Y,1.18*k,'#f5f7f6',.55);
+        arrow(X,Y,dx,dy,mint,.82*k);
       }
     }
-    g.save();g.font=`${Math.max(9,10*k)}px system-ui, sans-serif`;g.textAlign='center';g.fillStyle=type===2?'rgba(249,187,124,.44)':'rgba(151,220,239,.43)';g.fillText(['Δ','Φ₀','M'][type],x,y+19*k);g.restore();
-  }
+
+    g.save();
+    g.font=`${Math.max(8,10*k)}px system-ui, sans-serif`;
+    g.textAlign='center';
+    g.fillStyle=softWhite;
+    g.globalAlpha=.72;
+    g.fillText(['Δ','Φ₀','M'][type],x,y+17*k);
+    g.restore();
+  });
   g.restore();
 }
 function drawResearch(t){ // pinning and motion of magnetic flux vortices
